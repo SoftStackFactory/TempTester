@@ -1,0 +1,15 @@
+<ion-view view-title="Results">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear icon ion-ios-home button-icon" side="left" ng-click="menuButtonTapped()" ng-show="shouldShowButton">
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear icon ion-share" ng-click="selectEmployer()" ng-hide="isCompany">
+        </button>
+    </ion-nav-buttons>
+    
+    <ion-content class="padding"> 
+        <h1>Results</h1>
+        <canvas id="bar" class="chart chart-bar" data="data" labels="labels" options="options" height="300" colours="colours"></canvas>
+    </ion-content>
+</ion-view>

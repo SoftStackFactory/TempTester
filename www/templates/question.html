@@ -1,0 +1,31 @@
+<ion-view view-title="{{title}}">
+  <ion-nav-buttons></ion-nav-buttons>
+  <ion-content class="padding">
+    <div class="card">
+      <div class="item item-divider">
+        Option A
+      </div>
+      <div class="item item-text-wrap">
+        {{questionA.Text}}
+      </div>
+    </div>  
+    <div class="card">
+      <div class="item item-divider">
+        Option B
+      </div>
+      <div class="item item-text-wrap">
+        {{questionB.Text}}
+      </div>
+    </div>
+  </ion-content>
+  <!--<div class="bar bar-footer bar-calm">-->
+  <!--  <div class="title">Test Footer</div>-->
+  <!--</div>-->
+  <ion-footer-bar>
+      <div class="bar-positive tabs app-tabs">
+        <a class="tab-item" ng-click="buttonClicked('A')">A</a>
+        |
+        <a class="tab-item" ng-click="buttonClicked('B')">B</a>
+      </div>
+  </ion-footer-bar>
+</ion-view>
