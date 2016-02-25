@@ -24,5 +24,12 @@ angular.module('SSFConfig', [])
   };
 }])
 
+.config(['SSFConfigConstants', function(SSFConfigConstants) {
+	SSFConfigConstants['SSFAppCssService'] = {
+		'buttonPrimary': '#A34D24',
+		'buttonSecondary': '#808285',
+		'header': '#EB7C23'
+	};
+}])
 
 ;

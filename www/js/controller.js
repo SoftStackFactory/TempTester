@@ -1,10 +1,9 @@
 angular.module('starter.controllers', [])
 
 .controller('LoginCtrl', ['$scope', '$state', 'UserService', '$ionicHistory', '$window',
-        'SSFAlertsService', '$timeout', 'ionicMaterialInk','ionicMaterialMotion',
+        'SSFAlertsService', '$timeout', 'ionicMaterialInk','ionicMaterialMotion', 'SSFAppCssService',
         function($scope, $state, UserService, $ionicHistory, $window, SSFAlertsService, $timeout,
-        ionicMaterialInk, ionicMaterialMotion) {
-    
+        ionicMaterialInk, ionicMaterialMotion, SSFAppCssService) {
     
     $timeout(function(){
         ionicMaterialInk.displayEffect();
@@ -13,93 +12,72 @@ angular.module('starter.controllers', [])
     
     $scope.user = {};
     
-    var rememberMeValue;
-    if($window.localStorage["rememberMe"] === undefined || $window.localStorage["rememberMe"] == "true") {
-        rememberMeValue = true;
-    }else {
-        rememberMeValue = false;
-    }
+    var rememberMeValue = $window.localStorage["rememberMe"] === undefined || $window.localStorage["rememberMe"] == "true" ?
+        true : false;
     
-    $scope.checkbox = {
-        rememberMe : rememberMeValue
-    };
+    $scope.checkbox = {'rememberMe' : rememberMeValue};
     
-    if($window.localStorage["username"]!== undefined && rememberMeValue === true) {
+    if($window.localStorage["username"] !== undefined && rememberMeValue === true)
         $scope.user.email = $window.localStorage["username"];
-    }
-
     
     $scope.loginSubmitForm = function(form) {
-        if(form.$valid) {   
-            UserService.login($scope.user)
-            .then(function(response) {
-                if (response.status === 200) {
-                    //Should return a token
-                    $ionicHistory.nextViewOptions({
-                      historyRoot: true,
-                      disableBack: true
-                    });
-                    // $state.go('lobby');
-                    
-                    $window.localStorage['userID'] = response.data.userId;
-                    $window.localStorage['token'] = response.data.id;
-                    if(response.data.companyId !== undefined) {
-                        $window.localStorage['companyId'] = response.data.companyId;
-                        $state.go('compHist.companyHistory');
-                        
-                    }
-                    else {
-                        $state.go('lobby');
-                    }
-                    
-                    
-                    if($scope.checkbox.rememberMe) {
-                        $window.localStorage["username"] = $scope.user.email;
-                    }else {
-                        delete $window.localStorage["username"];
-                        $scope.user.email = "";
-                    }
-                    $window.localStorage["rememberMe"] = $scope.checkbox.rememberMe;
-                    $scope.user.password = "";
-                    form.$setPristine();
-                } else {
-                    // invalid response
-                    if(response.status === 401)
-                    {
-                        SSFAlertsService.showAlert("Error","Incorrect username or password");
-                    }else {
-                        SSFAlertsService.showAlert("Error", "Something went wrong, try again.");
-                    }
-                }
-            }, function(response) {
-                // Code 401 corresponds to Unauthorized access, in this case, the email/password combination was incorrect.
-                if(response.status === 401)
-                {
-                    SSFAlertsService.showAlert("Error","Incorrect username or password");
-                }else if(response.data === null) {
-                //If the data is null, it means there is no internet connection.
-                    SSFAlertsService.showAlert("Error","The connection with the server was unsuccessful, check your internet connection and try again later.");
-                }else {
-                    SSFAlertsService.showAlert("Error","Something went wrong, try again.");
-                }
-                
-            });
-        }
+        if(!form.$valid)
+            return;
+        UserService.login($scope.user)
+        .then(function(response) {
+            if(response.status === 401)
+                return SSFAlertsService.showAlert("Error","Incorrect username or password");
+            if(response.status !== 200)
+                return SSFAlertsService.showAlert("Error", "Something went wrong, try again.");
+            if(response.data.companyId !== undefined)
+                SSFAppCssService.setCss(response.data.appCss.buttonPrimary, response.data.appCss.buttonSecondary, response.data.appCss.header);
+            //Should return a token
+            setLocalStorage(response.data, form);
+        }, function(response) {
+            // Code 401 corresponds to Unauthorized access, in this case, the email/password combination was incorrect.
+            if(response.status === 401)
+                return SSFAlertsService.showAlert("Error","Incorrect username or password");
+            //If the data is null, it means there is no internet connection.
+            if(response.data === null)
+                return SSFAlertsService.showAlert("Error","The connection with the server was unsuccessful, check your internet connection and try again later.");
+            SSFAlertsService.showAlert("Error","Something went wrong, try again.");
+        });
     };
+    
+    function setLocalStorage(data, form) {
+        $window.localStorage['userID'] = data.userId;
+        $window.localStorage['token'] = data.id;
+        $scope.user.password = "";
+        form.$setPristine();
+        if($scope.checkbox.rememberMe) {
+            $window.localStorage["username"] = $scope.user.email;
+        } else {
+            delete $window.localStorage["username"];
+            $scope.user.email = "";
+        }
+        $window.localStorage["rememberMe"] = $scope.checkbox.rememberMe;
+        $ionicHistory.nextViewOptions({
+          historyRoot: true,
+          disableBack: true
+        });
+        if(data.companyId === undefined)
+            return $state.go('lobby');
+        $window.localStorage['companyId'] = data.companyId;
+        $state.go('compHist.companyHistory');
+    }
 }])
-.controller('RegisterCtrl',['$scope', '$state', 'UserService', '$ionicHistory','$window',
+.controller('RegisterCtrl', ['$scope', '$state', 'UserService', '$ionicHistory','$window',
         'SSFAlertsService', 'ServerEmployersService', '$timeout', 'ionicMaterialInk',
-        'ionicMaterialMotion', '$rootScope',
+        'ionicMaterialMotion', '$rootScope', 'SSFAppCssService',
         function($scope, $state, UserService, $ionicHistory, $window, SSFAlertsService,
         ServerEmployersService, $timeout, ionicMaterialInk, ionicMaterialMotion,
-        $rootScope) {
+        $rootScope, SSFAppCssService) {
     
     
     $timeout(function(){
         ionicMaterialInk.displayEffect();
         ionicMaterialMotion.ripple();
     },0);
-    // '$timeout', 'ionicMaterialInk','ionicMaterialMotion', $timeout, ionicMaterialInk, ionicMaterialMotion
 
     $scope.user = {};
     $scope.repeatPassword = {};
@@ -108,14 +86,11 @@ angular.module('starter.controllers', [])
     .then(function(response) {
         $scope.employers = response.data;
     });
-    $scope.signupForm = function(form)
-    {
-        if(form.$valid)
-        {   
-            if($scope.user.password !== $scope.repeatPassword.password)
-            {
+    $scope.signupForm = function(form) {
+        if(form.$valid) {   
+            if($scope.user.password !== $scope.repeatPassword.password) {
                 SSFAlertsService.showAlert("Warning","Passwords must match");
-            }else {
+            } else {
                 $window.localStorage['userEmployer'] = $scope.user.organization;
                 UserService.create($scope.user)
                 .then(function(response) {
@@ -124,25 +99,23 @@ angular.module('starter.controllers', [])
                         form.$setPristine();
                     } else {
                         // status 422 in this case corresonds to the email already registered to the DB
-                        if(response.status === 422)
-                        {
+                        if(response.status === 422) {
                             SSFAlertsService.showAlert("Warning","The email is already taken.");
-                        }else if(response.data === null){
+                        } else if(response.data === null){
                              //If the data is null, it means there is no internet connection.
                             SSFAlertsService.showAlert("Error","The connection with the server was unsuccessful, check your internet connection and try again later.");
-                        }else {
+                        } else {
                             SSFAlertsService.showAlert("Error","Something went wrong, try again.");
                         }
                     }
                 }, function(response) {
                     // status 422 in this case corresonds to the email already registered to the DB
-                    if(response.status === 422)
-                    {
+                    if(response.status === 422) {
                         SSFAlertsService.showAlert("Warning","The email is already taken.");
-                    }else if(response.data === null){
+                    } else if(response.data === null){
                          //If the data is null, it means there is no internet connection.
                         SSFAlertsService.showAlert("Error","The connection with the server was unsuccessful, check your internet connection and try again later.");
-                    }else {
+                    } else {
                         SSFAlertsService.showAlert("Error","Something went wrong, try again.");
                     }
                 });
@@ -153,7 +126,7 @@ angular.module('starter.controllers', [])
     function loginAfterRegister() {
         UserService.login($scope.user)
         .then(function(response) {
-            if (response.status === 200) {
+            if(response.status === 200) {
                 //Should return a token
                 $window.localStorage["userID"] = response.data.userId;
                 $window.localStorage['token'] = response.data.id;
@@ -161,10 +134,17 @@ angular.module('starter.controllers', [])
                     historyRoot: true,
                     disableBack: true
                 });
-                setCss();
+                // sets CSS for normal user based on company chosen.
+                // var company;
+                // for(var i in $scope.employers) {
+                //     if($scope.employers[i].id === $scope.user.organization) {
+                //         company = $scope.employers[i];
+                //         break;
+                //     }
+                // }
+                // SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
                 $state.go('lobby');
-            }
-            else {
+            } else {
                 // invalid response
                 $state.go('landing');
             }
@@ -177,8 +157,7 @@ angular.module('starter.controllers', [])
         });
     }
     
-    function resetFields()
-    {
+    function resetFields() {
         $scope.user.email = "";
         $scope.user.firstName = "";
         $scope.user.lastName = "";
@@ -186,43 +165,52 @@ angular.module('starter.controllers', [])
         $scope.user.password = "";
         $scope.repeatPassword.password = "";
     }
-    function setCss() {
-        var company;
-        for(var i in $scope.employers) {
-            if($scope.employers[i].id === $scope.user.organization) {
-                company = $scope.employers[i];
-                break;
-            }
-        }
-        var sheet = window.document.styleSheets[0];
-        $window.localStorage['appCss'] = JSON.stringify({
-            'buttonPrimary': company.buttonPrimary,
-            'buttonSecondary': company.buttonSecondary,
-            'header': company.header
-        });
-        sheet.insertRule(
-            '.app-button {' +
-                'font-weight: bold !important;' + 
-                'background-color: ' + company.buttonPrimary + ' !important;' + 
-            '}', sheet.cssRules.length);
-        sheet.insertRule(
-            '.app-button-inverted {' + 
-                'font-weight: bold !important;' + 
-                'background-color: ' + company.buttonSecondary + ' !important;' + 
-            '}', sheet.cssRules.length);
-        sheet.insertRule(
-            '.app-bar-header {' + 
-                'background-color: ' + company.header + ' !important;' + 
-            '}', sheet.cssRules.length);
-        sheet.insertRule(
-            '.app-tabs {' + 
-                'font-weight: bold !important;' + 
-                'background-color: ' + company.buttonPrimary + ' !important;' + 
-            '}', sheet.cssRules.length);
-    }
+    // function setCss() {
+    //     var company;
+    //     for(var i in $scope.employers) {
+    //         if($scope.employers[i].id === $scope.user.organization) {
+    //             company = $scope.employers[i];
+    //             break;
+    //         } else {
+    //             company = 'none';
+    //         }
+    //     }
+    //     if(company === 'none') {
+    //         company = {
+    //             'buttonPrimary': '#387ef5',
+    //             'buttonSecondary': '#808285',
+    //             'header': '#11c1f3'
+    //         };
+    //     }
+    //     var sheet = window.document.styleSheets[0];
+    //     $window.localStorage['appCss'] = JSON.stringify({
+    //         'buttonPrimary': company.buttonPrimary,
+    //         'buttonSecondary': company.buttonSecondary,
+    //         'header': company.header
+    //     });
+    //     sheet.insertRule(
+    //         '.app-button {' +
+    //             'font-weight: bold !important;' + 
+    //             'background-color: ' + company.buttonPrimary + ' !important;' + 
+    //         '}', sheet.cssRules.length);
+    //     sheet.insertRule(
+    //         '.app-button-inverted {' + 
+    //             'font-weight: bold !important;' + 
+    //             'background-color: ' + company.buttonSecondary + ' !important;' + 
+    //         '}', sheet.cssRules.length);
+    //     sheet.insertRule(
+    //         '.app-bar-header {' + 
+    //             'background-color: ' + company.header + ' !important;' + 
+    //         '}', sheet.cssRules.length);
+    //     sheet.insertRule(
+    //         '.app-tabs {' + 
+    //             'font-weight: bold !important;' + 
+    //             'background-color: ' + company.buttonPrimary + ' !important;' + 
+    //         '}', sheet.cssRules.length);
+    // }
 }])
 
-.controller('LobbyCtrl',['$scope', '$state', '$ionicHistory', 'UserService','$window', 
+.controller('LobbyCtrl', ['$scope', '$state', '$ionicHistory', 'UserService','$window', 
         'ServerQuestionService', 'TKQuestionsService', 'TKAnswersService', 'SSFAlertsService',
         'ServerEmployersService', 'SSFSelectServices', '$timeout', 'ionicMaterialInk', 'ionicMaterialMotion',
         '$rootScope',
@@ -415,11 +403,11 @@ SSFAlertsService, UserService, ServerCompanyToTestsService) {
     
 }])
 .controller('ResultsCtrl', ['$scope', 'TKAnswersService', '$ionicHistory', '$state',
-        'TKResultsButtonService', '$window', 'ServerCompanyToTestsService',
+        'TKResultsButtonService', '$window',
         'ServerEmployersService', 'ServerAnswersService', 'SSFAlertsService',
         'SSFSelectServices',
         function($scope, TKAnswersService, $ionicHistory, $state, TKResultsButtonService,
-        $window, ServerCompanyToTestsService, ServerEmployersService, ServerAnswersService,
+        $window, ServerEmployersService, ServerAnswersService,
         SSFAlertsService, SSFSelectServices) {
     
     $scope.$on('$ionicView.enter', function() {
@@ -575,18 +563,10 @@ SSFAlertsService, UserService, ServerCompanyToTestsService) {
         TKResultsButtonService, SSFAlertsService, TKQuestionsService, $ionicHistory,
         $rootScope, ServerEmployersService, employerName) {
     
-    
+    var currentDate, page;
     $scope.employerName = employerName;
-    $scope.doRefresh = function() {
-        $rootScope.stopSpinner = true;
-        performRequest()
-        .then(function(res) {
-            $scope.$broadcast('scroll.refreshComplete');
-        });
-    };
     
     $scope.tests = [];
-    performRequest();
     $scope.testResults = [];
     
     $scope.goToResult = function(test) {
@@ -620,30 +600,61 @@ SSFAlertsService, UserService, ServerCompanyToTestsService) {
         });
     };
     $scope.companiesArray = [];
+    $scope.refreshResults = function() {
+        performRequest();
+    };
+    $scope.doRefresh = function() {
+        page = {'nextPage': undefined};
+        currentDate = new Date();
+        currentDate = currentDate.toUTCString();
+        $rootScope.stopSpinner = true;
+        performRequest()
+        .then(function(res) {
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    };
+    $scope.doRefresh();
+    $scope.scrollResults = function() {
+        if(page.nextPage <= page.totalPages) {
+            performRequest();
+        }
+    };
     function performRequest() {
-        return ServerAnswersService.allByEmployerId($window.localStorage.companyId, $window.localStorage.token)
+        return ServerAnswersService.allByEmployerId(currentDate, undefined, page.nextPage, $window.localStorage.companyId, $window.localStorage.token)
         .then(function(response) {
-            $scope.persons = response.data.structuredResults;
+            $scope.persons = response.data.results;
             for (var i in $scope.persons) {
-                $scope.persons[i][0].dataArray = [[returnPercentage($scope.persons[i][0].competing), returnPercentage($scope.persons[i][0].collaborating), 
-                returnPercentage($scope.persons[i][0].compromising), returnPercentage($scope.persons[i][0].avoiding), returnPercentage($scope.persons[i][0].accommodating)]];
+                $scope.persons[i].dataArray = [[returnPercentage($scope.persons[i].competing), returnPercentage($scope.persons[i].collaborating), 
+                returnPercentage($scope.persons[i].compromising), returnPercentage($scope.persons[i].avoiding), returnPercentage($scope.persons[i].accommodating)]];
             }
+            page = {'nextPage': response.data.nextPage, 'totalPages': response.data.totalPages};
             return response;
+        },function(err) {
+            console.log(err);
         });
     }
     
-    $scope.ifTest = function(person) {
-        if (person.length == 1) {
+    $scope.ifTest = function(count) {
+        if (count == 1) {
             return 'Test';
         } else {
             return 'Tests';
         }
     };
     
-    
-    $scope.moreTests = function(person) {
-        TKQuestionsService.setCompanyUserData(person);
-        $state.go('history');
+    $scope.moreTests = function(userData) {
+        var tempDate = new Date();
+        tempDate = tempDate.toUTCString();
+        ServerAnswersService.allBySharedId(tempDate, undefined, undefined, $window.localStorage.companyId, $window.localStorage.token, userData.userID)
+        .then(function(res) {
+            if(res.status === 200) {
+                res.data.results[0].firstName = userData.firstName;
+                res.data.results[0].lastName = userData.lastName;
+                TKQuestionsService.setCompanyUserData(res.data.results);
+                $state.go('history');
+            }
+        },function(err) {
+        });
     };
 
     $scope.options = {

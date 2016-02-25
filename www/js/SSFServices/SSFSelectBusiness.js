@@ -7,8 +7,8 @@ Instructions:
 
 
 angular.module('SSFSelectBusiness', [])
-.service('SSFSelectServices', ['$ionicPopover', 'ServerEmployersService', '$window', '$ionicModal',
-        function($ionicPopover, ServerEmployersService, $window, $ionicModal) {
+.service('SSFSelectServices', ['$ionicPopover', 'ServerEmployersService', '$window', '$ionicModal', 'SSFAppCssService',
+        function($ionicPopover, ServerEmployersService, $window, $ionicModal, SSFAppCssService) {
     
     var service = this;
     
@@ -24,39 +24,13 @@ angular.module('SSFSelectBusiness', [])
         
         $scope.companyChange = function(company) {
             $window.localStorage['userEmployer'] = company.id;
-            
-            var sheet = window.document.styleSheets[0];
-            $window.localStorage['appCss'] = JSON.stringify({
-                'buttonPrimary': company.buttonPrimary,
-                'buttonSecondary': company.buttonSecondary,
-                'header': company.header
-            });
-            sheet.insertRule(
-                '.app-button {' +
-                    'font-weight: bold !important;' + 
-                    'background-color: ' + company.buttonPrimary + ' !important;' + 
-                '}', sheet.cssRules.length);
-            sheet.insertRule(
-                '.app-button-inverted {' + 
-                    'font-weight: bold !important;' + 
-                    'background-color: ' + company.buttonSecondary + ' !important;' + 
-                '}', sheet.cssRules.length);
-            sheet.insertRule(
-                '.app-bar-header {' + 
-                    'background-color: ' + company.header + ' !important;' + 
-                '}', sheet.cssRules.length);
-            sheet.insertRule(
-                '.app-tabs {' + 
-                    'font-weight: bold !important;' + 
-                    'background-color: ' + company.buttonPrimary + ' !important;' + 
-                '}', sheet.cssRules.length);
-
+            SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
             $scope.closeEmployerPopover();
         };
         $scope.user = {};
         
         var template = 
-            '<ion-modal-view ssf-modal-fix>'+
+            '<ion-modal-view>'+
                 '<ion-header-bar>'+
                     '<h1 class="title">Pick an Employer</h1>'+
                     '<div class="button button-icon button-clear" ng-click="closeModal()"><button class="button-icon icon ion-close-round"></button></div>' +

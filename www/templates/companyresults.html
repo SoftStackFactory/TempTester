@@ -10,20 +10,20 @@
             <div class="item card" ng-repeat="person in persons">
                 <div class="row">
                     <h2 style="font-size:25px;white-space:normal">
-                        {{person[0].firstName}} {{person[0].lastName}}
+                        {{person.firstName}} {{person.lastName}}
                     </h2>
                 </div>
                 <div class="row">
                     <div class="col col-50">
                         <div class="item-note">
-                            {{person[0].createDate | date:'dd-MMM-yyyy'}}
+                            {{person.createDate | date:'dd-MMM-yyyy'}}
                         </div>
                         <button style="position:relative;top:5vh;" ng-click="moreTests(person)" class="button button-small button-block button-stable">
-                            {{person.length}} {{ifTest(person)}}
+                            {{person.countBYuserID}} {{ifTest(person.countBYuserID)}}
                         </button>
                     </div>
-                    <div class="col col-50" ng-click="goToResult(person[0])">
-                        <canvas style="z-index:1000; height:75px" id="bar" class="chart chart-bar" data='person[0].dataArray' labels="labels" options="options" colours="colours"></canvas>
+                    <div class="col col-50" ng-click="goToResult(person)">
+                        <canvas style="z-index:1000; height:75px" id="bar" class="chart chart-bar" data='person.dataArray' labels="labels" options="options" colours="colours"></canvas>
                     </div>
                 </div>
             </div>

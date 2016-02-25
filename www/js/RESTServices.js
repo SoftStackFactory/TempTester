@@ -15,14 +15,14 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   };
   
   service.login = function(user) {
-    user["ttl"] = 1209600000;
-    return $http.post(getUrl()+"login",user);
+    user['ttl'] = 1209600000;
+    return $http.post(getUrl()+'login',user);
   };
   
   service.updateUser = function(token, userId, newModel) {
     return $http({
       url: getUrl()+userId,
-      method: "PUT",
+      method: 'PUT',
       data: newModel,
       headers: {
         'Authorization': token
@@ -32,8 +32,8 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   
   service.logout = function(token) {
     return $http({
-        url: getUrl()+"logout",
-        method: "POST",
+        url: getUrl()+'logout',
+        method: 'POST',
         headers: {
           'Authorization': token
         }
@@ -69,7 +69,7 @@ function ($http, ENDPOINT_URL) {
   service.create = function(answer, token) {
     return $http({
         url: getUrl(),
-        method: "POST",
+        method: 'POST',
         data: JSON.stringify(answer),
         headers: {
             'Authorization': token
@@ -78,39 +78,64 @@ function ($http, ENDPOINT_URL) {
   };
   
   service.all = function(userID, token) {
-    return $http.get(getUrl()+"?filter[where][userID]="+userID+"&filter[where][original]=true",{
+    return $http.get(getUrl()+'?filter[where][userID]='+userID+'&filter[where][original]=true',{
         params: { access_token: token }
     });
   };
   service.checkAll = function(userId, employerId, createDate, token) {
     return $http.get(getUrl()+
-        "?filter[where][userID]="+userId+
-        "&filter[where][employerId]="+employerId+
-        "&filter[where][createDate]="+createDate,{
+        '?filter[where][userID]='+userId+
+        '&filter[where][employerId]='+employerId+
+        '&filter[where][createDate]='+createDate,{
       params: { access_token: token }
     });
   };
   service.allByTestId = function(testId, token) {
-    return $http.get(getUrl()+"?filter[where][id]="+testId,{
+    return $http.get(getUrl()+'?filter[where][id]='+testId,{
         params: { access_token: token }
     });
   };
-  service.allByEmployerId = function(employerId, token) {
-    var sentObject = {'employerId': employerId};
-    // return $http.post(getUrl()+'forEmployers', {
-    //   params: {
-    //     access_token: token,
-    //     idObject: sentObject
-    //   }
-    // });
-    
+  service.allByEmployerId = function(date, limit, nextPage, employerId, token) {
     return $http({
-      url: getUrl()+"forEmployers",
-      method: "POST",
-      data: {'idObject': {'employerId': employerId}},
+      url: getUrl()+'page',
+      method: 'POST',
+      data: {
+        'date': date,
+        'limit': limit,
+        'filters': {
+          'where': {
+            'employerId': '56a7cdbf64ed9a170491cc2f'
+          },
+          'order': 'createDate DESC'
+        },
+        'nextPage': nextPage,
+        'unique': 'userID'
+      },
       headers: {
           'Authorization': token,
-          "Content-Type":"application/json"
+          'Content-Type':'application/json'
+      }
+    });
+  };
+  service.allBySharedId = function(date, limit, nextPage, employerId, token, userId) {
+    return $http({
+      url: getUrl()+'page',
+      method: 'POST',
+      data: {
+        'date': date,
+        'limit': limit,
+        'filters': {
+          'where': {
+            'employerId': '56a7cdbf64ed9a170491cc2f',
+            'userID': userId
+          },
+          'order': 'createDate DESC'
+        },
+        'nextPage': nextPage
+      },
+      headers: {
+          'Authorization': token,
+          'Content-Type':'application/json'
       }
     });
   };
@@ -127,35 +152,8 @@ function ($http, ENDPOINT_URL) {
 
   service.get = function(answer, token) {
     return $http({
-        url: getUrl()+"?filter[where][active]=true",
-        method: "GET"
-     });
-  };
-  
-  
-    // ServerEmployersService.get()
-    // .then(function(response) {
-    //     console.log(response);
-    // });
-  
-}])
-.service('ServerCompanyToTestsService', ['$http', 'ENDPOINT_URL', 
-function ($http, ENDPOINT_URL) {
-  var service = this,
-  path = 'CompanyToTests/';
-
-  function getUrl() {
-    return ENDPOINT_URL + path;
-  }
-
-  service.create = function(newModel, token) {
-    return $http({
-        url: getUrl(),
-        method: "POST",
-        data: newModel,
-        headers: {
-            'Authorization': token
-        }
+        url: getUrl()+'?filter[where][active]=true',
+        method: 'GET'
      });
   };
   

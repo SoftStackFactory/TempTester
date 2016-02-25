@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'RESTConnection', 'TKServicesModule',
-    'chart.js', 'SSFAlerts', 'ngIOS9UIWebViewPatch', 'SSFConfig', 'SSFSelectBusiness', 'SSFSpinner', 'SSFDirectives'])
+    'chart.js', 'SSFAlerts', 'ngIOS9UIWebViewPatch', 'SSFConfig', 'SSFAppCss', 'SSFSelectBusiness', 'SSFSpinner', 'SSFDirectives'])
 
 .run(["$ionicPlatform", "$window", "$state", "$ionicHistory", function($ionicPlatform, $window, $state, $ionicHistory) {
   $ionicPlatform.ready(function() {
@@ -18,19 +18,25 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'RE
       StatusBar.StatusBar.styleLightContent();
     }
     
-    if($window.localStorage.userID !== undefined) {
+    $ionicHistory.nextViewOptions({
+      historyRoot: true,
+      disableBack: true
+    });
+    if($window.localStorage.companyId !== undefined) {
+      $state.go('compHist.companyHistory');
+    } else if($window.localStorage.userID !== undefined) {
       $state.go('lobby');
     } else {
       $state.go('landing');
     }
     
-    if($window.localStorage["userID"]!==undefined) {
-        $ionicHistory.nextViewOptions({
-            historyRoot: true,
-            disableBack: true
-        });
-        $state.go("lobby");
-    }
+    // if($window.localStorage["userID"]!==undefined) {
+    //     $ionicHistory.nextViewOptions({
+    //         historyRoot: true,
+    //         disableBack: true
+    //     });
+    //     $state.go("lobby");
+    // }
   });
 }])
 .config(['$stateProvider', '$urlRouterProvider',
@@ -140,34 +146,4 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'RE
     delete $window.localStorage['userID'];
     $state.go('landing');
   });  
-}])
-.run(['$window', function($window) {
-  if($window.localStorage['appCss'] !== undefined) {
-    var company = JSON.parse($window.localStorage['appCss']);
-    var sheet = window.document.styleSheets[0];
-    sheet.insertRule(
-      '.app-button {' +
-          'font-weight: bold !important;' + 
-          'background-color: ' + company.buttonPrimary + ' !important;' + 
-      '}', sheet.cssRules.length);
-    sheet.insertRule(
-      '.app-button-inverted {' + 
-          'font-weight: bold !important;' + 
-          'background-color: ' + company.buttonSecondary + ' !important;' + 
-      '}', sheet.cssRules.length);
-    sheet.insertRule(
-      '.app-bar-header {' + 
-          'background-color: ' + company.header + ' !important;' + 
-      '}', sheet.cssRules.length);
-    sheet.insertRule(
-      '.app-tabs {' + 
-          'font-weight: bold !important;' + 
-          'background-color: ' + company.buttonPrimary + ' !important;' + 
-      '}', sheet.cssRules.length);
-  }
-  // var sheet = window.document.styleSheets[0];
-  // sheet.insertRule('.app-button {font-weight: bold !important;background-color: #A34D24 !important;font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !important;}', sheet.cssRules.length);
-  // sheet.insertRule('.app-button-inverted {font-weight: bold !important;background-color: #808285 !important;font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !important;}', sheet.cssRules.length);
-  // sheet.insertRule('.app-bar-header {background-color: #EB7C23 !important;}', sheet.cssRules.length);
-  // sheet.insertRule('.app-tabs {font-weight: bold !important;background-color: #A34D24 !important;font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !important;}', sheet.cssRules.length);
 }]);
