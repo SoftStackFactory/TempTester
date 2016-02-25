@@ -117,13 +117,17 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
   $urlRouterProvider.otherwise('/');
   
 }])
-.run(["$rootScope", "$ionicHistory", "$state", "$window", function($rootScope, $ionicHistory, $state, $window) {
+.run(["$rootScope", "$ionicHistory", "$state", "$window", "UserService",
+    function($rootScope, $ionicHistory, $state, $window, UserService) {
 
   $rootScope.$on('request:auth', function() {
     $ionicHistory.nextViewOptions({
       historyRoot: true,
       disableBack: true
     });
+    if($window.localStorage.token !== undefined)
+      UserService.logout($window.localStorage.token);
+    delete $window.localStorage['userEmployer'];
     delete $window.localStorage['token'];
     delete $window.localStorage['userID'];
     $state.go('landing');

@@ -11,7 +11,7 @@ angular.module('controllers')
         ionicMaterialInk.displayEffect();
         ionicMaterialMotion.ripple();
     },0);
-
+    
     $scope.$on('$ionicView.enter', function() {
       // Code you want executed every time view is opened
       TKAnswersService.resetAnswers();
@@ -27,77 +27,45 @@ angular.module('controllers')
     $scope.logout = function() {
         SSFAlertsService.showConfirm('Logout', 'Are you sure you want to logout?')
         .then(function(response) {
-            if(response) {
-                delete $window.localStorage['userEmployer'];
-                delete $window.localStorage['token'];
-                delete $window.localStorage['userID'];
-                $ionicHistory.nextViewOptions({
-                    historyRoot: true,
-                    disableBack: true
-                });
-                $state.go('landing');
-            }
+            if(!response)
+                return;
+            $rootScope.$broadcast('request:auth');
         });
-    //     UserService.logout($window.localStorage.token)
-    //     .then(function(response) {
-    //         //The successful code for logout is 204
-    //         if(response.status === 204) {
-    //             delete $window.localStorage['token'];
-    //             delete $window.localStorage['userID'];
-    //             $ionicHistory.nextViewOptions({
-    //               historyRoot: true,
-    //               disableBack: true
-    //             });
-    //             $state.go('landing');
-    //         }
-    //         else {
-    //              SSFAlertsService.showAlert("Error","Could not logout at this moment, try again.");
-    //         }
-    //     }, function(response) {
-    //         SSFAlertsService.showAlert("Error","Could not logout at this moment, try again.");
-    //     });
     };
     
     //Get Questions Initially if they are not already stored
     if(TKQuestionsService.questionsLenght() === 0)
         getQuestions();
         
-    function getQuestions()
-    {
+    function getQuestions() {
         ServerQuestionService.all($window.localStorage['token'])
         .then(function(response) {
-            if (response.status === 200) {
-                var questions = response.data;
-                TKQuestionsService.setQuestions(questions);
-            } else if(response.status !== 401) {
-                // invalid response
-                confirmPrompt();
-            }
+            if(response.status !== 401)
+                return confirmPrompt();
+            if (response.status !== 200)
+                return SSFAlertsService.showAlert('Error', 'Some unknown error occurred.');
+            var questions = response.data;
+            TKQuestionsService.setQuestions(questions);
         }, function(response) {
             // something went wrong
             confirmPrompt();
         });
     }
     
-    function confirmPrompt()
-    {
+    function confirmPrompt() {
         SSFAlertsService.showConfirm("Error","The questions could not be retrieved at this time, do you want to try again?")
         .then(function(response) {
-            if (response == true) {
+            if(response == true)
                 getQuestions();
-            }
         });
     }
     
     $scope.takeTestButtonTapped = function() {
-        if($window.localStorage.userEmployer === undefined) {
-            SSFAlertsService.showAlert('Error', 'Please select a company to share your results with, or select "None" to not share them.');
-        }
-        else if(TKQuestionsService.questionsLenght() === 0)
+        if($window.localStorage.userEmployer === undefined)
+            return SSFAlertsService.showAlert('Error', 'Please select a company to share your results with, or select "None" to not share with anyone.');
+        if(TKQuestionsService.questionsLenght() === 0)
             getQuestions();
-        else {
-            $state.go('tk-questions.detail',{testID:1});
-        }
+        $state.go('tk-questions.detail',{testID:1});
     };
     
     $scope.selectEmployer = function($event) {
