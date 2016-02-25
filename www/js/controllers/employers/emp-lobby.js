@@ -22,7 +22,7 @@ angular.module('controllers')
         };
         TKAnswersService.setAnswers(test);
         TKResultsButtonService.setShouldShowMenuButton(false);
-        $state.go('results');
+        $state.go('tk-history');
     };
     
     $scope.logout = function() {
@@ -94,7 +94,7 @@ angular.module('controllers')
                 res.data.results[0].firstName = userData.firstName;
                 res.data.results[0].lastName = userData.lastName;
                 TKQuestionsService.setCompanyUserData(res.data.results);
-                $state.go('history');
+                tk-history');
             }
         },function(err) {
         });

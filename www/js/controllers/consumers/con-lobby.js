@@ -20,7 +20,7 @@ angular.module('controllers')
           historyRoot: true,
           disableBack: true
         });
-        $state.go('compHist.companyHistory');
+        $state.go('emp-lobby');
       }
     });
     
@@ -96,7 +96,7 @@ angular.module('controllers')
         else if(TKQuestionsService.questionsLenght() === 0)
             getQuestions();
         else {
-            $state.go('test.detail',{testID:1});
+            $state.go('tk-questions.detail',{testID:1});
         }
     };
     

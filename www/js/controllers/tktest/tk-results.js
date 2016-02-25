@@ -23,7 +23,7 @@ angular.module('controllers')
             historyRoot: true,
             disableBack: true
         });
-        $state.go('lobby');
+        $state.go('con-lobby');
     };
     
     $scope.labels = ["Competing", "Collaborating", "Compromising", "Avoiding", "Accommodating"];

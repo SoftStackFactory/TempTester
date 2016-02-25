@@ -70,7 +70,7 @@ angular.module('controllers')
                 historyRoot: true,
                 disableBack: true
             });
-            $state.go('lobby');
+            $state.go('con-lobby');
         },
         function(response) {
             // something went wrong

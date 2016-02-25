@@ -23,9 +23,9 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
       disableBack: true
     });
     if($window.localStorage.companyId !== undefined) {
-      $state.go('compHist.companyHistory');
+      $state.go('emp-lobby');
     } else if($window.localStorage.userID !== undefined) {
-      $state.go('lobby');
+      $state.go('con-lobby');
     } else {
       $state.go('landing');
     }
@@ -41,55 +41,17 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     templateUrl: 'templates/landing.html',
     controller: 'LandingCtrl'
   })
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/forms/login.html',
-    controller:'LoginCtrl'
-  })
-  .state('register', {
-    url: '/register',
-    templateUrl: 'templates/forms/register.html',
-    controller:'RegisterCtrl'
-  })
-  .state('lobby', {
-    url: '/lobby',
+  
+  //consumers
+  .state('con-lobby', {
+    url: '/consumers-lobby',
     templateUrl: 'templates/consumers/con-lobby.html',
     controller:'ConLobbyCtrl'
   })
-  .state('test', {
-    abstract: true,
-    url: '/test',
-    template: '<ion-nav-view></ion-nav-view>'
-  })
-  .state('test.detail', {
-    url: '/question:testID',
-    templateUrl: 'templates/tktest/tk-questions.html',
-    controller: 'TkQuestionsCtrl',
-    resolve: {
-      testInfo: function($stateParams, TKQuestionsService) {
-        return TKQuestionsService.getQuestion($stateParams.testID);
-      }
-    }
-  })
-  .state('results', {
-    cache:false,
-    url: '/results',
-    templateUrl: 'templates/tktest/tk-results.html',
-    controller:'TkResultsCtrl'
-  })
-  .state('history', {
-    cache: false,
-    url: '/history',
-    templateUrl: 'templates/tktest/tk-history.html',
-    controller:'TkHistoryCtrl'
-  })
-  .state('compHist', {
-    abstract: true,
-    url: '/compHist',
-    template: '<ion-nav-view></ion-nav-view>'
-  })
-  .state('compHist.companyHistory', {
-    url: '/companyHistory',
+  
+  //employers
+  .state('emp-lobby', {
+    url: '/employer-lobby',
     templateUrl: 'templates/employers/emp-lobby.html',
     controller:'EmpLobbyCtrl',
     resolve: {
@@ -104,7 +66,54 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
         });
       }
     }
+  })
+  
+  //forms
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/forms/login.html',
+    controller:'LoginCtrl'
+  })
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/forms/register.html',
+    controller:'RegisterCtrl'
+  })
+  
+  //TKTest
+  .state('tk-questions', {
+    abstract: true,
+    url: '/test',
+    template: '<ion-nav-view></ion-nav-view>'
+  })
+  .state('tk-questions.detail', {
+    url: '/tk-question:testID',
+    templateUrl: 'templates/tktest/tk-questions.html',
+    controller: 'TkQuestionsCtrl',
+    resolve: {
+      testInfo: function($stateParams, TKQuestionsService) {
+        return TKQuestionsService.getQuestion($stateParams.testID);
+      }
+    }
+  })
+  .state('tk-results', {
+    cache:false,
+    url: '/tk-results',
+    templateUrl: 'templates/tktest/tk-results.html',
+    controller:'TkResultsCtrl'
+  })
+  .state('tk-history', {
+    cache: false,
+    url: '/tk-history',
+    templateUrl: 'templates/tktest/tk-history.html',
+    controller:'TkHistoryCtrl'
   });
+  // .state('history', {
+  //   cache: false,
+  //   url: '/history',
+  //   templateUrl: 'templates/tktest/tk-history.html',
+  //   controller:'TkHistoryCtrl'
+  // });
   $urlRouterProvider.otherwise('/');
   
 }])

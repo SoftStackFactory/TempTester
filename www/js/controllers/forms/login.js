@@ -60,8 +60,8 @@ angular.module('controllers')
           disableBack: true
         });
         if(data.companyId === undefined)
-            return $state.go('lobby');
+            return $state.go('con-lobby');
         $window.localStorage['companyId'] = data.companyId;
-        $state.go('compHist.companyHistory');
+        $state.go('emp-lobby');
     }
 }]);

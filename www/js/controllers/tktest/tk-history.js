@@ -53,6 +53,6 @@ angular.module('controllers')
         // };
         TKAnswersService.setAnswers(test);
         TKResultsButtonService.setShouldShowMenuButton(false);
-        $state.go('results');
+        $state.go('tk-results');
     };
 }]);

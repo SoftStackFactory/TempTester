@@ -35,7 +35,7 @@ angular.module('controllers')
       if(nextqNumber>30) {
           performRequest();
       }else {
-          $state.go('test.detail',{testID:nextqNumber});
+          $state.go('tk-questions.detail',{testID:nextqNumber});
       }
   };
   
@@ -57,7 +57,7 @@ angular.module('controllers')
               });
               TKAnswersService.setAnswers(answersDict);
               TKResultsButtonService.setShouldShowMenuButton(true);
-              $state.go('results');
+              $state.go('tk-results');
           } else if(response.status !== 401) {
               // invalid response
               confirmPrompt();
@@ -79,7 +79,7 @@ angular.module('controllers')
                   disableBack: true
               });
               TKResultsButtonService.setShouldShowMenuButton(true);
-              $state.go('results');
+              $state.go('tk-results');
           }
       });
   }
