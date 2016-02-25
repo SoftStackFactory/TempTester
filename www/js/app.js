@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'RESTConnection', 'TKServicesModule',
+angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'controllers', 'RESTConnection', 'TKServicesModule',
     'chart.js', 'SSFAlerts', 'ngIOS9UIWebViewPatch', 'SSFConfig', 'SSFAppCss', 'SSFSelectBusiness', 'SSFSpinner', 'SSFDirectives'])
 
 .run(["$ionicPlatform", "$window", "$state", "$ionicHistory", function($ionicPlatform, $window, $state, $ionicHistory) {
@@ -47,26 +47,7 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'RE
   .state('landing', {
     url: '/',
     templateUrl: 'templates/landing.html',
-    controller: ['$scope', 'SSFConfigConstants', '$state', '$timeout', 'ionicMaterialInk',
-        'ionicMaterialMotion', '$ionicHistory',
-        function($scope, SSFConfigConstants, $state, $timeout, ionicMaterialInk,
-        ionicMaterialMotion, $ionicHistory) {
-      $scope.$on('$ionicView.enter', function() {
-        $ionicHistory.clearCache();
-      });
-      $timeout(function(){
-        ionicMaterialInk.displayEffect();
-        ionicMaterialMotion.ripple();
-      },0);
-      $scope.loginButton = function(whichLogin) {
-        SSFConfigConstants.currentLogin = whichLogin;
-        $state.go('login');
-      };
-      $scope.registerButton = function() {
-        SSFConfigConstants.currentLogin = 'SSFUsers/';
-        $state.go('register');
-      };
-    }]
+    controller: 'LandingCtrl'
   })
   .state('login', {
     url: '/login',
