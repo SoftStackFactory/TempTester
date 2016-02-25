@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'controllers', 'RESTConnection', 'TKServicesModule',
+angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnection', 'TKServicesModule',
     'chart.js', 'SSFAlerts', 'ngIOS9UIWebViewPatch', 'SSFConfig', 'SSFAppCss', 'SSFSelectBusiness', 'SSFSpinner', 'SSFDirectives'])
 
 .run(["$ionicPlatform", "$window", "$state", "$ionicHistory", function($ionicPlatform, $window, $state, $ionicHistory) {
@@ -29,14 +29,6 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'co
     } else {
       $state.go('landing');
     }
-    
-    // if($window.localStorage["userID"]!==undefined) {
-    //     $ionicHistory.nextViewOptions({
-    //         historyRoot: true,
-    //         disableBack: true
-    //     });
-    //     $state.go("lobby");
-    // }
   });
 }])
 .config(['$stateProvider', '$urlRouterProvider',
@@ -51,18 +43,18 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'co
   })
   .state('login', {
     url: '/login',
-    templateUrl: 'templates/login.html',
+    templateUrl: 'templates/forms/login.html',
     controller:'LoginCtrl'
   })
   .state('register', {
     url: '/register',
-    templateUrl: 'templates/register.html',
+    templateUrl: 'templates/forms/register.html',
     controller:'RegisterCtrl'
   })
   .state('lobby', {
     url: '/lobby',
-    templateUrl: 'templates/lobby.html',
-    controller:'LobbyCtrl'
+    templateUrl: 'templates/consumers/con-lobby.html',
+    controller:'ConLobbyCtrl'
   })
   .state('test', {
     abstract: true,
@@ -71,8 +63,8 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'co
   })
   .state('test.detail', {
     url: '/question:testID',
-    templateUrl: 'templates/question.html',
-    controller: 'TestCtrl',
+    templateUrl: 'templates/tktest/tk-questions.html',
+    controller: 'TkQuestionsCtrl',
     resolve: {
       testInfo: function($stateParams, TKQuestionsService) {
         return TKQuestionsService.getQuestion($stateParams.testID);
@@ -82,14 +74,14 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'co
   .state('results', {
     cache:false,
     url: '/results',
-    templateUrl: 'templates/results.html',
-    controller:'ResultsCtrl'
+    templateUrl: 'templates/tktest/tk-results.html',
+    controller:'TkResultsCtrl'
   })
   .state('history', {
     cache: false,
     url: '/history',
-    templateUrl: 'templates/history.html',
-    controller:'HistoryCtrl'
+    templateUrl: 'templates/tktest/tk-history.html',
+    controller:'TkHistoryCtrl'
   })
   .state('compHist', {
     abstract: true,
@@ -98,8 +90,8 @@ angular.module('starter', ['ionic', 'ionic-material', 'starter.controllers', 'co
   })
   .state('compHist.companyHistory', {
     url: '/companyHistory',
-    templateUrl: 'templates/companyresults.html',
-    controller:'companyHistoryCtrl',
+    templateUrl: 'templates/employers/emp-lobby.html',
+    controller:'EmpLobbyCtrl',
     resolve: {
       employerName: function(ServerEmployersService, $window) {
         return ServerEmployersService.get()

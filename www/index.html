@@ -34,18 +34,29 @@
     <script src="js/SSFServices/SSFSelectBusiness.js"></script>
     <script src="js/SSFServices/SSFSpinner.js"></script>
     
-    <script src="js/controller.js"></script>
+    <!-- Controllers -->
     <script src="js/controllers/landing.js"></script>
+    <!-- Forms -->
     <script src="js/controllers/forms/login.js"></script>
     <script src="js/controllers/forms/register.js"></script>
+    <!-- Consumers -->
+    <script src="js/controllers/consumers/con-lobby.js"></script>
+    <!-- Employers -->
+    <script src="js/controllers/employers/emp-lobby.js"></script>
+    <!-- TKTest -->
+    <script src="js/controllers/tktest/tk-history.js"></script>
+    <script src="js/controllers/tktest/tk-results.js"></script>
+    <script src="js/controllers/tktest/tk-questions.js"></script>
+    
+    
     <script src="js/RESTServices.js"></script>
     <script src="js/TKServices.js"></script>
-    <script src="js/SSFAlerts.js"></script>
+    <script src="js/SSFServices/SSFAlerts.js"></script>
     <script src="js/app.js"></script>
   </head>
   <body ng-app="starter">
     
-    <div resize style="height:100%;" ng-style="style()">
+    <div resize="" style="height:100%;" ng-style="style()">
       <ion-nav-bar class="bar-calm app-bar-header" style="{{appCss.header}}">
         <ion-nav-back-button>
           {{&quot;&quot;}}
