@@ -26,6 +26,7 @@ angular.module('SSFAppCss', [])
 	var service = this;
 	var defaultCss = SSFConfigConstants.SSFAppCssService;
 	
+	
 	service.setCss = function(buttonPrimary, buttonSecondary, header) {
 		var cssObject = {};
 		cssObject.buttonPrimary = buttonPrimary !== undefined ? buttonPrimary : defaultCss.buttonPrimary;
@@ -37,11 +38,7 @@ angular.module('SSFAppCss', [])
 				sheet.deleteRule(i); //does not delete css loaded via file
 			}
 		}
-		$window.localStorage['appCss'] = JSON.stringify({
-			'buttonPrimary': cssObject.buttonPrimary,
-			'buttonSecondary': cssObject.buttonSecondary,
-			'header': cssObject.header
-		});
+		$window.localStorage['appCss'] = JSON.stringify(cssObject);
 		sheet.insertRule(
 			'.app-button {' +
 				'font-weight: bold !important;' + 

@@ -117,14 +117,15 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
   $urlRouterProvider.otherwise('/');
   
 }])
-.run(["$rootScope", "$ionicHistory", "$state", "$window", "UserService", "TKQuestionsService",
-    function($rootScope, $ionicHistory, $state, $window, UserService, TKQuestionsService) {
+.run(["$rootScope", "$ionicHistory", "$state", "$window", "UserService", "TKQuestionsService", 'SSFAppCssService',
+    function($rootScope, $ionicHistory, $state, $window, UserService, TKQuestionsService, SSFAppCssService) {
 
   $rootScope.$on('request:auth', function() {
     $ionicHistory.nextViewOptions({
       historyRoot: true,
       disableBack: true
     });
+    SSFAppCssService.setCss();
     if($window.localStorage.token !== undefined)
       UserService.logout($window.localStorage.token);
     delete $window.localStorage['userEmployer'];

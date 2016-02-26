@@ -7,7 +7,7 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   // path = 'SSFUsers/';
   
   function getUrl() {
-    return ENDPOINT_URL + SSFConfigConstants.currentLogin;
+    return ENDPOINT_URL + 'SSFUsers/';
   }
   
   service.create = function (user) {
@@ -16,7 +16,7 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   
   service.login = function(user) {
     user['ttl'] = 1209600000;
-    return $http.post(getUrl()+'login',user);
+    return $http.post(ENDPOINT_URL + SSFConfigConstants.currentLogin + 'login', user);
   };
   
   service.updateUser = function(token, userId, newModel) {
