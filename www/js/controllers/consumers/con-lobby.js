@@ -40,9 +40,9 @@ angular.module('controllers')
     function getQuestions() {
         ServerQuestionService.all($window.localStorage['token'])
         .then(function(response) {
-            if(response.status !== 401)
+            if(response.status === 401)
                 return confirmPrompt();
-            if (response.status !== 200)
+            if(response.status !== 200)
                 return SSFAlertsService.showAlert('Error', 'Some unknown error occurred.');
             var questions = response.data;
             TKQuestionsService.setQuestions(questions);
