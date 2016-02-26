@@ -32,7 +32,7 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   
   service.logout = function(token) {
     return $http({
-        url: getUrl()+'logout',
+        url: ENDPOINT_URL + SSFConfigConstants.currentLogin + 'logout',
         method: 'POST',
         headers: {
           'Authorization': token

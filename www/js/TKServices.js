@@ -33,7 +33,7 @@ angular.module('TKServicesModule', [])
     };
 })
 
-.service('TKAnswersService', function () {
+.service('TKAnswersService', function() {
     var service = this;
     var answerCategories = {
         "competing": 0,
@@ -42,12 +42,12 @@ angular.module('TKServicesModule', [])
         "avoiding": 0,
         "accommodating": 0
     };
-    var answers = {};
+    var answers = [];
     
     var lastQuestionNumber = 0;
     var categoriesStack = [];
     
-    service.setLastQuestionNumber = function(qNumber){
+    service.setLastQuestionNumber = function(qNumber) {
         lastQuestionNumber = parseInt(qNumber);  
     };
     
@@ -55,35 +55,33 @@ angular.module('TKServicesModule', [])
         return lastQuestionNumber;  
     };
     
-    service.saveAnswer = function(questionNumber, answerCategory, option)
-    {
+    service.saveAnswer = function(questionNumber, answerCategory, option) {
         answerCategories[answerCategory.toLowerCase()]++;
         answers[questionNumber] = option;
         categoriesStack.push(answerCategory);
     };
     
-    service.getAnswers = function()
-    {
+    service.getAnswers = function() {
         return answerCategories;
     };
-    
-    service.setAnswers = function(answers)
-    {
-        answerCategories = answers;
+    service.getArray = function() {
+        return answers;
     };
     
-    service.resetAnswers = function()
-    {
-        for (var property in answerCategories) {
-            if (answerCategories.hasOwnProperty(property)) {
+    service.setAnswers = function(input) {
+        answerCategories = input;
+    };
+    
+    service.resetAnswers = function() {
+        for(var property in answerCategories) {
+            if(answerCategories.hasOwnProperty(property)) {
                 answerCategories[property] = 0;
             }
         }
         lastQuestionNumber = 0;
     };
     
-    service.eraseLastAnswer = function()
-    {
+    service.eraseLastAnswer = function() {
         answerCategories[categoriesStack.pop().toLowerCase()]--;
     };
 })

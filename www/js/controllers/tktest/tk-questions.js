@@ -38,6 +38,7 @@ angular.module('controllers')
   
   function performRequest() {
     var answersDict = angular.copy(TKAnswersService.getAnswers());
+    answersDict.answers = angular.copy(TKAnswersService.getArray());
     answersDict["userID"] = $window.localStorage['userID'];
     answersDict["employerId"] = $window.localStorage['userEmployer'];
     answersDict["original"] = true;

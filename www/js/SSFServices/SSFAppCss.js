@@ -63,28 +63,25 @@ angular.module('SSFAppCss', [])
 }])
 .run(['SSFConfigConstants', '$window',
 		function(SSFConfigConstants, $window) {
-	
-  if($window.localStorage['appCss'] !== undefined) {
-    var company = JSON.parse($window.localStorage['appCss']);
-    var sheet = window.document.styleSheets[0];
-    sheet.insertRule(
-      '.app-button {' +
-				'font-weight: bold !important;' +
-				'background-color: ' + company.buttonPrimary + ' !important;' +
-      '}', sheet.cssRules.length);
-    sheet.insertRule(
-      '.app-button-inverted {' +
-				'font-weight: bold !important;' +
-				'background-color: ' + company.buttonSecondary + ' !important;' +
-      '}', sheet.cssRules.length);
-    sheet.insertRule(
-      '.app-bar-header {' +
-				'background-color: ' + company.header + ' !important;' +
-      '}', sheet.cssRules.length);
-    sheet.insertRule(
-      '.app-tabs {' +
-				'font-weight: bold !important;' +
-				'background-color: ' + company.buttonPrimary + ' !important;' +
-      '}', sheet.cssRules.length);
-  }
+	var company = $window.localStorage['appCss'] === undefined ? SSFConfigConstants.SSFAppCssService : JSON.parse($window.localStorage['appCss']);
+  var sheet = window.document.styleSheets[0];
+  sheet.insertRule(
+    '.app-button {' +
+			'font-weight: bold !important;' +
+			'background-color: ' + company.buttonPrimary + ' !important;' +
+    '}', sheet.cssRules.length);
+  sheet.insertRule(
+    '.app-button-inverted {' +
+			'font-weight: bold !important;' +
+			'background-color: ' + company.buttonSecondary + ' !important;' +
+    '}', sheet.cssRules.length);
+  sheet.insertRule(
+    '.app-bar-header {' +
+			'background-color: ' + company.header + ' !important;' +
+    '}', sheet.cssRules.length);
+  sheet.insertRule(
+    '.app-tabs {' +
+			'font-weight: bold !important;' +
+			'background-color: ' + company.buttonPrimary + ' !important;' +
+    '}', sheet.cssRules.length);
 }]);

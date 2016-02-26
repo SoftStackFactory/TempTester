@@ -108,12 +108,6 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     templateUrl: 'templates/tktest/tk-history.html',
     controller:'TkHistoryCtrl'
   });
-  // .state('history', {
-  //   cache: false,
-  //   url: '/history',
-  //   templateUrl: 'templates/tktest/tk-history.html',
-  //   controller:'TkHistoryCtrl'
-  // });
   $urlRouterProvider.otherwise('/');
   
 }])
