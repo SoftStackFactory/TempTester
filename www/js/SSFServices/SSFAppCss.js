@@ -84,4 +84,9 @@ angular.module('SSFAppCss', [])
 			'font-weight: bold !important;' +
 			'background-color: ' + company.buttonPrimary + ' !important;' +
     '}', sheet.cssRules.length);
+  sheet.insertRule(
+    '.checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before {' +
+			'background: ' + company.buttonPrimary + ' !important;' +
+			'border-color: ' + company.buttonPrimary + ' !important;' +
+    '}', sheet.cssRules.length);
 }]);

@@ -21,7 +21,7 @@ angular.module('controllers')
     
     $scope.signupForm = function(form) {
         if(!form.$valid)
-            return;
+            return SSFAlertsService.showAlert('Error', 'Please fill in all required fields.');
         if($scope.user.password !== $scope.repeatPassword.password)
             return SSFAlertsService.showAlert("Warning","Passwords must match");
         
@@ -57,14 +57,14 @@ angular.module('controllers')
             }
             setLocalStorage(response.data);
             // sets CSS for normal user based on company chosen.
-            // var company;
-            // for(var i in $scope.employers) {
-            //     if($scope.employers[i].id === $scope.user.organization) {
-            //         company = $scope.employers[i];
-            //         break;
-            //     }
-            // }
-            // SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
+            var company;
+            for(var i in $scope.employers) {
+                if($scope.employers[i].id === $scope.user.organization) {
+                    company = $scope.employers[i];
+                    break;
+                }
+            }
+            SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
             resetFields();
             $ionicHistory.nextViewOptions({
                 historyRoot: true,

@@ -22,7 +22,7 @@ angular.module('controllers')
     
     $scope.loginSubmitForm = function(form) {
         if(!form.$valid)
-            return;
+            return SSFAlertsService.showAlert('Error', 'Please fill in all required fields.');
         UserService.login($scope.user)
         .then(function(response) {
             if(response.status === 401)

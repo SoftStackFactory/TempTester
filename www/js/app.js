@@ -12,6 +12,7 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true); //asdf
     }
     if(window.StatusBar) {
       StatusBar.overlaysWebView(true)
