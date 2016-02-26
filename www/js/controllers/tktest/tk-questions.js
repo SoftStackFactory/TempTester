@@ -1,14 +1,14 @@
 angular.module('controllers')
 .controller('TkQuestionsCtrl', ['$scope', 'testInfo', '$stateParams', '$state', '$window',
-    'TKQuestionsService', 'TKAnswersService', 'ServerAnswersService', '$ionicHistory', 
+    'TKAnswersService', 'ServerAnswersService', '$ionicHistory', 
     'TKResultsButtonService', 'SSFAlertsService', 'UserService',
-    function($scope, testInfo, $stateParams, $state, $window, TKQuestionsService, 
+    function($scope, testInfo, $stateParams, $state, $window, 
     TKAnswersService, ServerAnswersService, $ionicHistory, TKResultsButtonService,
     SSFAlertsService, UserService) {
   
   //testInfo is passed in the router to indicate the index
   var qNumber = $stateParams.testID;
-  $scope.title = "Question #"+qNumber;
+  $scope.title = "Question #" + qNumber;
 
   $scope.$on("$ionicView.beforeEnter", function(){
     var lastQuestionNumber = TKAnswersService.getLastQuestionNumber();

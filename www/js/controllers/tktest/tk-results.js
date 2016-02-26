@@ -1,20 +1,27 @@
 angular.module('controllers')
 .controller('TkResultsCtrl', ['$scope', 'TKAnswersService', '$ionicHistory', '$state',
-        'TKResultsButtonService', '$window',
-        'ServerEmployersService', 'ServerAnswersService', 'SSFAlertsService',
+        'TKResultsButtonService', '$window', 'ServerAnswersService', 'SSFAlertsService',
         'SSFSelectServices',
         function($scope, TKAnswersService, $ionicHistory, $state, TKResultsButtonService,
-        $window, ServerEmployersService, ServerAnswersService,
-        SSFAlertsService, SSFSelectServices) {
+        $window, ServerAnswersService, SSFAlertsService, SSFSelectServices) {
     
-    $scope.$on('$ionicView.enter', function() {
-        // Code you want executed every time view is opened
-        $scope.isCompany = $window.localStorage['companyId'] !== undefined ? true : false;
-    });
+    // $scope.$on('$ionicView.enter', function() {
+    //     // Code you want executed every time view is opened
+    //     $scope.isCompany = $window.localStorage['companyId'] !== undefined ? true : false;
+    // });
     $scope.isCompany = $window.localStorage['companyId'] !== undefined ? true : false;
+    var answersInfo = TKAnswersService.getAnswers();
     
     $scope.selectEmployer = function($event) {
-        SSFSelectServices.chooseEmployer($event, $scope, 'addEmployer');
+        //new call getting all of the shared results
+        ServerAnswersService.checkTest(answersInfo.userID, answersInfo.createDate, $window.localStorage['token'])
+        .then(function(res) {
+            var tempArray = [];
+            for(var i in res.data) {
+                tempArray.push(res.data[i].employerId);
+            }
+            SSFSelectServices.chooseEmployer($event, $scope, 'addEmployer', tempArray);
+        });
     };
     
     $scope.shouldShowButton = TKResultsButtonService.getShouldShowMenuButton();
@@ -27,42 +34,30 @@ angular.module('controllers')
     };
     
     $scope.labels = ["Competing", "Collaborating", "Compromising", "Avoiding", "Accommodating"];
-
-    // ServerEmployersService.get()
-    // .then(function(response) {
-    //     $scope.employers = response.data;
-    // });
-    
-    $scope.companyChange = function() {
-        $window.localStorage['userEmployer'] = $scope.user.organization;
-    };
-    
-    var answersInfo = TKAnswersService.getAnswers();
-    
-    
     $scope.addEmployer = function() {
         var newInstanceResult = {};
         for(var i in answersInfo) {
-            if(i !== '$$hashKey' && i !== 'id') {
+            if(i !== '$$hashKey' && i !== 'id' && i !== 'shared') {
                 newInstanceResult[i] = answersInfo[i];
             }
         }
         newInstanceResult.employerId = $window.localStorage['userEmployer'];
         newInstanceResult.original = false;
-        ServerAnswersService.checkAll(newInstanceResult.userID, newInstanceResult.employerId, answersInfo.createDate, $window.localStorage.token)
-        .then(function(response) {
-            if(response.data.length === 0) {
-                if(newInstanceResult.userID === undefined) {
-                    newInstanceResult.userID = $window.localStorage.userID;
-                }
-                ServerAnswersService.create(newInstanceResult, $window.localStorage.token)
-                .then(function(newInstance) {
-                });
+        // ServerAnswersService.checkAll(newInstanceResult.userID, newInstanceResult.employerId, answersInfo.createDate, $window.localStorage.token)
+        // .then(function(response) {
+        if(answersInfo.shared) {
+            if(newInstanceResult.userID === undefined) {
+                newInstanceResult.userID = $window.localStorage.userID;
             }
-            else {
+            ServerAnswersService.create(newInstanceResult, $window.localStorage.token)
+            .then(function(newInstance) {
+            });
+        }
+        else {
+            if(answersInfo.shared !== undefined)
                 SSFAlertsService.showAlert('Error', 'This result has already been shared with that employer.');
-            }
-        });
+        }
+        // });
     };
    
     $scope.data = [[returnPercentage(answersInfo["competing"]), returnPercentage(answersInfo["collaborating"]), 
@@ -90,9 +85,8 @@ angular.module('controllers')
         pointHighlightStroke: "rgba(151,187,205,0.8)"
     }];
     
-    function returnPercentage (value)
-    {
-        return (value/12)*100;
+    function returnPercentage(value) {
+        return (value / 12) * 100;
     }
 
 }]);

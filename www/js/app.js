@@ -97,7 +97,7 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     }
   })
   .state('tk-results', {
-    cache:false,
+    cache: false,
     url: '/tk-results',
     templateUrl: 'templates/tktest/tk-results.html',
     controller:'TkResultsCtrl'

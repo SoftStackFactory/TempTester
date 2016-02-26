@@ -82,11 +82,11 @@ function ($http, ENDPOINT_URL) {
         params: { access_token: token }
     });
   };
-  service.checkAll = function(userId, employerId, createDate, token) {
+  service.checkTest = function(userId, createDate, token) {
     return $http.get(getUrl()+
         '?filter[where][userID]='+userId+
-        '&filter[where][employerId]='+employerId+
-        '&filter[where][createDate]='+createDate,{
+        '&filter[where][createDate]='+createDate +
+        '&filter[fields][employerId]=true',{
       params: { access_token: token }
     });
   };
@@ -156,11 +156,4 @@ function ($http, ENDPOINT_URL) {
         method: 'GET'
      });
   };
-  
-  
-    // ServerEmployersService.get()
-    // .then(function(response) {
-    //     console.log(response);
-    // });
-  
 }]);

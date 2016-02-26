@@ -1,8 +1,9 @@
 angular.module('controllers')
 .controller('LoginCtrl', ['$scope', '$state', 'UserService', '$ionicHistory', '$window',
         'SSFAlertsService', '$timeout', 'ionicMaterialInk','ionicMaterialMotion', 'SSFAppCssService',
+        'SSFConfigConstants',
         function($scope, $state, UserService, $ionicHistory, $window, SSFAlertsService, $timeout,
-        ionicMaterialInk, ionicMaterialMotion, SSFAppCssService) {
+        ionicMaterialInk, ionicMaterialMotion, SSFAppCssService, SSFConfigConstants) {
     
     $timeout(function(){
         ionicMaterialInk.displayEffect();
@@ -41,6 +42,12 @@ angular.module('controllers')
                 return SSFAlertsService.showAlert("Error","The connection with the server was unsuccessful, check your internet connection and try again later.");
             SSFAlertsService.showAlert("Error","Something went wrong, try again.");
         });
+    };
+    
+    $scope.register = function() {
+        if(SSFConfigConstants.currentLogin === 'CompanyUsers/')
+            return SSFAlertsService.showAlert('Notice', 'To register as a new employer, please email jpbrown@softstackfactory.org for more information.');
+        $state.go('register');
     };
     
     function setLocalStorage(data, form) {
