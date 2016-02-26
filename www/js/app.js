@@ -117,8 +117,8 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
   $urlRouterProvider.otherwise('/');
   
 }])
-.run(["$rootScope", "$ionicHistory", "$state", "$window", "UserService",
-    function($rootScope, $ionicHistory, $state, $window, UserService) {
+.run(["$rootScope", "$ionicHistory", "$state", "$window", "UserService", "TKQuestionsService",
+    function($rootScope, $ionicHistory, $state, $window, UserService, TKQuestionsService) {
 
   $rootScope.$on('request:auth', function() {
     $ionicHistory.nextViewOptions({
@@ -130,6 +130,8 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     delete $window.localStorage['userEmployer'];
     delete $window.localStorage['token'];
     delete $window.localStorage['userID'];
+    delete $window.localStorage['companyId'];
+    TKQuestionsService.setCompanyUserData([]);
     $state.go('landing');
   });  
 }]);

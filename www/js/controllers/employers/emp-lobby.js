@@ -1,10 +1,10 @@
 angular.module('controllers')
-.controller('EmpLobbyCtrl', ['$scope', 'ServerAnswersService', '$window', '$state', 'UserService',
+.controller('EmpLobbyCtrl', ['$scope', 'ServerAnswersService', '$window', '$state',
         'TKAnswersService', 'TKResultsButtonService', 'SSFAlertsService',
-        'TKQuestionsService', '$ionicHistory', '$rootScope', 'ServerEmployersService', 'employerName',
-        function($scope, ServerAnswersService, $window, $state, UserService, TKAnswersService,
-        TKResultsButtonService, SSFAlertsService, TKQuestionsService, $ionicHistory,
-        $rootScope, ServerEmployersService, employerName) {
+        'TKQuestionsService', '$rootScope', 'employerName',
+        function($scope, ServerAnswersService, $window, $state, TKAnswersService,
+        TKResultsButtonService, SSFAlertsService, TKQuestionsService,
+        $rootScope, employerName) {
     
     var currentDate, page;
     $scope.employerName = employerName;
@@ -13,33 +13,16 @@ angular.module('controllers')
     $scope.testResults = [];
     
     $scope.goToResult = function(test) {
-        var answers = {
-            "competing": test.competing,
-            "collaborating": test.collaborating,
-            "compromising": test.compromising,
-            "avoiding": test.avoiding,
-            "accommodating": test.accommodating
-        };
         TKAnswersService.setAnswers(test);
         TKResultsButtonService.setShouldShowMenuButton(false);
-        $state.go('tk-history');
+        $state.go('tk-results');
     };
     
     $scope.logout = function() {
         SSFAlertsService.showConfirm('Logout', 'Are you sure you want to logout?')
         .then(function(response) {
-            if(response) {
-                TKQuestionsService.setCompanyUserData([]);
-                delete $window.localStorage['userEmployer'];
-                delete $window.localStorage['token'];
-                delete $window.localStorage['userID'];
-                delete $window.localStorage['companyId'];
-                $ionicHistory.nextViewOptions({
-                    historyRoot: true,
-                    disableBack: true
-                });
-                $state.go('landing');
-            }
+            if(response)
+                $rootScope.$broadcast('request:auth');
         });
     };
     $scope.companiesArray = [];
@@ -57,14 +40,19 @@ angular.module('controllers')
         });
     };
     $scope.doRefresh();
+    var stopScrolling = false;
     $scope.scrollResults = function() {
         if(page.nextPage <= page.totalPages) {
             performRequest();
         }
     };
     function performRequest() {
+        if(stopScrolling)
+            return;
         return ServerAnswersService.allByEmployerId(currentDate, undefined, page.nextPage, $window.localStorage.companyId, $window.localStorage.token)
         .then(function(response) {
+            if(response.status !== 200)
+                return stopScrolling = true;
             $scope.persons = response.data.results;
             for (var i in $scope.persons) {
                 $scope.persons[i].dataArray = [[returnPercentage($scope.persons[i].competing), returnPercentage($scope.persons[i].collaborating), 
@@ -73,16 +61,21 @@ angular.module('controllers')
             page = {'nextPage': response.data.nextPage, 'totalPages': response.data.totalPages};
             return response;
         },function(err) {
-            console.log(err);
+            stopScrolling = true;
+            if(err.data === null)
+                return;
+            SSFAlertsService.showConfirm('Error', 'There was a problem getting more results, do you want to try again?')
+            .then(function(res) {
+                if(res)
+                    stopScrolling = false;
+            });
         });
     }
     
     $scope.ifTest = function(count) {
-        if (count == 1) {
+        if(count == 1)
             return 'Test';
-        } else {
-            return 'Tests';
-        }
+        return 'Tests';
     };
     
     $scope.moreTests = function(userData) {
@@ -90,13 +83,26 @@ angular.module('controllers')
         tempDate = tempDate.toUTCString();
         ServerAnswersService.allBySharedId(tempDate, undefined, undefined, $window.localStorage.companyId, $window.localStorage.token, userData.userID)
         .then(function(res) {
-            if(res.status === 200) {
-                res.data.results[0].firstName = userData.firstName;
-                res.data.results[0].lastName = userData.lastName;
-                TKQuestionsService.setCompanyUserData(res.data.results);
-                tk-history');
-            }
+            if(res.status !== 200)
+                return SSFAlertsService.showConfirm('Error', 'Something went wrong with getting the users results.')
+                .then(function(res) {
+                    if(res)
+                        $scope.moreTests();
+                    return;
+                });
+            res.data.results[0].firstName = userData.firstName;
+            res.data.results[0].lastName = userData.lastName;
+            TKQuestionsService.setCompanyUserData(res.data.results);
+            $state.go('tk-history');
         },function(err) {
+            if(err.data === null)
+                return SSFAlertsService.showAlert('Error', 'We cannot retrieve the data while offline.');
+            return SSFAlertsService.showConfirm('Error', 'Something went wrong with getting the users results.')
+            .then(function(res) {
+                if(res)
+                    $scope.moreTests();
+                return;
+            });
         });
     };
 
@@ -124,18 +130,7 @@ angular.module('controllers')
     
     $scope.labels = ["Competing", "Collaborating", "Compromising", "Avoiding", "Accommodating"];
 
-    function returnPercentage (value)
-    {
-        return (value/12)*100;
-    }
-    
-    function confirmPrompt()
-    {
-        SSFAlertsService.showConfirm("Warning","The tests could not be retrieved at the moment, do you want to try again?")
-        .then(function(response){
-            if (response === true) {
-                performRequest();
-            } 
-        });
+    function returnPercentage (value) {
+        return (value / 12) * 100;
     }
 }]);

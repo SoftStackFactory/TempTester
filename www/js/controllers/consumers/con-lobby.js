@@ -1,10 +1,10 @@
 angular.module('controllers')
-.controller('ConLobbyCtrl', ['$scope', '$state', '$ionicHistory', 'UserService','$window', 
+.controller('ConLobbyCtrl', ['$scope', '$state', '$ionicHistory','$window', 
         'ServerQuestionService', 'TKQuestionsService', 'TKAnswersService', 'SSFAlertsService',
-        'ServerEmployersService', 'SSFSelectServices', '$timeout', 'ionicMaterialInk', 'ionicMaterialMotion',
+        'SSFSelectServices', '$timeout', 'ionicMaterialInk', 'ionicMaterialMotion',
         '$rootScope',
-        function($scope, $state, $ionicHistory, UserService, $window, ServerQuestionService,
-        TKQuestionsService, TKAnswersService, SSFAlertsService, ServerEmployersService,
+        function($scope, $state, $ionicHistory, $window, ServerQuestionService,
+        TKQuestionsService, TKAnswersService, SSFAlertsService,
         SSFSelectServices, $timeout, ionicMaterialInk, ionicMaterialMotion, $rootScope) {
     
     $timeout(function(){
