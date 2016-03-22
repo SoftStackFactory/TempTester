@@ -10,6 +10,9 @@
 .no-border {
   border-width: 0px;
 }
+.subheader {
+    font-size: 20px;
+}
 
 /* ionics padding */
 .button {

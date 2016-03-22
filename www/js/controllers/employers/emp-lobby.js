@@ -49,7 +49,7 @@ angular.module('controllers')
     function performRequest() {
         if(stopScrolling)
             return;
-        return ServerAnswersService.allByEmployerId(currentDate, undefined, page.nextPage, $window.localStorage.companyId, $window.localStorage.token)
+        return ServerAnswersService.allByEmployerId(currentDate, 15, page.nextPage, $window.localStorage.companyId, $window.localStorage.token)
         .then(function(response) {
             if(response.status !== 200)
                 return stopScrolling = true;
@@ -81,7 +81,7 @@ angular.module('controllers')
     $scope.moreTests = function(userData) {
         var tempDate = new Date();
         tempDate = tempDate.toUTCString();
-        ServerAnswersService.allBySharedId(tempDate, undefined, undefined, $window.localStorage.companyId, $window.localStorage.token, userData.userID)
+        ServerAnswersService.allBySharedId(tempDate, 15, undefined, $window.localStorage.companyId, $window.localStorage.token, userData.userID)
         .then(function(res) {
             if(res.status !== 200)
                 return SSFAlertsService.showConfirm('Error', 'Something went wrong with getting the users results.')
@@ -133,4 +133,12 @@ angular.module('controllers')
     function returnPercentage (value) {
         return (value / 12) * 100;
     }
+    
+    $scope.anyResults = function() {
+        if($scope.persons === undefined)
+            return true;
+        if($scope.persons.length === 0)
+            return false;
+        return true;
+    };
 }]);

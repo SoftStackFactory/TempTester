@@ -57,7 +57,7 @@ angular.module('controllers')
             }
             setLocalStorage(response.data);
             // sets CSS for normal user based on company chosen.
-            var company;
+            var company = {};
             for(var i in $scope.employers) {
                 if($scope.employers[i].id === $scope.user.organization) {
                     company = $scope.employers[i];

@@ -13,15 +13,15 @@ angular.module('controllers')
     },0);
     
     $scope.$on('$ionicView.enter', function() {
-      // Code you want executed every time view is opened
-      TKAnswersService.resetAnswers();
-      if($window.localStorage.companyId !== undefined) {
-        $ionicHistory.nextViewOptions({
-          historyRoot: true,
-          disableBack: true
-        });
-        $state.go('emp-lobby');
-      }
+        // Code you want executed every time view is opened
+        TKAnswersService.resetAnswers();
+        if($window.localStorage.companyId !== undefined) {
+            $ionicHistory.nextViewOptions({
+                historyRoot: true,
+                disableBack: true
+            });
+            $state.go('emp-lobby');
+        }
     });
     
     $scope.logout = function() {

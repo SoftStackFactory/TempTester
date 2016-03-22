@@ -50,7 +50,7 @@ angular.module('controllers')
     .then(function(response) {
       if(response.status !== 200)
         confirmPrompt();
-      UserService.updateUser($window.localStorage['token'], $window.localStorage['userID'], {'organization': $window.localStorage['userEmployer']});
+      UserService.updateUser($window.localStorage['token'], $window.localStorage['userID'], {'organization': $window.localStorage['userEmployer']}, 'SSFUsers/');
       $ionicHistory.nextViewOptions({
         historyRoot: true,
         disableBack: true

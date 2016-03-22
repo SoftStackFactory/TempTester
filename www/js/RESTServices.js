@@ -1,6 +1,6 @@
 angular.module('RESTConnection', [])
 .constant('ENDPOINT_URL', 'https://strongloop-backend-jbrownssf.c9.io/api/')
-
+//https://apitemperamenttests.softstackfactory.com/api/
 .service('UserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
 function ($http, ENDPOINT_URL, SSFConfigConstants) {
   var service = this;
@@ -19,11 +19,11 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
     return $http.post(ENDPOINT_URL + SSFConfigConstants.currentLogin + 'login', user);
   };
   
-  service.updateUser = function(token, userId, newModel) {
+  service.updateUser = function(token, userId, newData, whichModel) {
     return $http({
-      url: getUrl()+userId,
+      url: ENDPOINT_URL + whichModel,
       method: 'PUT',
-      data: newModel,
+      data: newData,
       headers: {
         'Authorization': token
       }
@@ -90,11 +90,6 @@ function ($http, ENDPOINT_URL) {
       params: { access_token: token }
     });
   };
-  service.allByTestId = function(testId, token) {
-    return $http.get(getUrl()+'?filter[where][id]='+testId,{
-        params: { access_token: token }
-    });
-  };
   service.allByEmployerId = function(date, limit, nextPage, employerId, token) {
     return $http({
       url: getUrl()+'page',
@@ -104,7 +99,7 @@ function ($http, ENDPOINT_URL) {
         'limit': limit,
         'filters': {
           'where': {
-            'employerId': '56a7cdbf64ed9a170491cc2f'
+            'employerId': employerId
           },
           'order': 'createDate DESC'
         },
@@ -126,7 +121,7 @@ function ($http, ENDPOINT_URL) {
         'limit': limit,
         'filters': {
           'where': {
-            'employerId': '56a7cdbf64ed9a170491cc2f',
+            'employerId': employerId,
             'userID': userId
           },
           'order': 'createDate DESC'
@@ -150,10 +145,21 @@ function ($http, ENDPOINT_URL) {
     return ENDPOINT_URL + path;
   }
 
-  service.get = function(answer, token) {
+  service.get = function() {
     return $http({
-        url: getUrl()+'?filter[where][active]=true',
-        method: 'GET'
+      url: getUrl()+'?filter[where][active]=true',
+      method: 'GET'
      });
+  };
+  
+  service.update = function(token, companyId, newModel) {
+    return $http({
+      url: getUrl()+companyId,
+      method: 'PUT',
+      data: newModel,
+      headers: {
+        'Authorization': token
+      }
+   });
   };
 }]);

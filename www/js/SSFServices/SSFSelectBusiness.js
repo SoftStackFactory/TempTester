@@ -8,7 +8,8 @@ Instructions:
 
 angular.module('SSFSelectBusiness', [])
 .service('SSFSelectServices', ['$ionicPopover', 'ServerEmployersService', '$window', '$ionicModal', 'SSFAppCssService',
-        function($ionicPopover, ServerEmployersService, $window, $ionicModal, SSFAppCssService) {
+        'SSFAlertsService',
+        function($ionicPopover, ServerEmployersService, $window, $ionicModal, SSFAppCssService, SSFAlertsService) {
     
     var service = this;
     
@@ -36,6 +37,8 @@ angular.module('SSFSelectBusiness', [])
         $scope.companyChange = function(company) {
             $window.localStorage['userEmployer'] = company.id;
             SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
+            if(company.shared)
+                return SSFAlertsService.showAlert('Error', 'You have already shared these results with this employer.');
             $scope.closeEmployerPopover();
         };
         $scope.user = {};
@@ -48,7 +51,7 @@ angular.module('SSFSelectBusiness', [])
                 '</ion-header-bar>'+
                 '<ion-content>'+
                     '<div class="item item-icon-right" ng-repeat="employer in employers" ng-click="companyChange(employer)">'+
-                        '{{employer.company_name}}'+
+                        '<img ng-src="{{employer.iconUrl}}" style="height: 40px; width: 40px; vertical-align: middle;">{{employer.company_name}}'+
                         '<ion-icon class="icon ion-checkmark balanced" ng-show="employer.shared"></ion-icon>'+
                     '</div>'+
                     '<div class="item" ng-click="closeEmployerPopover()">None</div>'+

@@ -68,6 +68,24 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
       }
     }
   })
+  .state('emp-settings', {
+    url: '/employer-settings',
+    cache: false,
+    templateUrl: 'templates/employers/emp-settings.html',
+    controller:'EmpSettingsCtrl',
+    resolve: {
+      employer: function(ServerEmployersService, $window) {
+        return ServerEmployersService.get()
+        .then(function(response) {
+          for(var i in response.data) {
+            if($window.localStorage.companyId === response.data[i].id) {
+              return response.data[i];
+            }
+          }
+        });
+      }
+    }
+  })
   
   //forms
   .state('login', {

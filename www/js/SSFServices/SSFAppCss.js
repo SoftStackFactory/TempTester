@@ -1,4 +1,4 @@
-/* Spinner while waiting for a call to return from a backend
+/* Changes the colors of the app.
 Instructions:
 1.  Inject 'SSFAppCss' into the app.js file before any of the other SSFServices.
 2.  Place '<script src="js/SSFServices/SSFAppCss.js"></script>' into the index.html
@@ -14,9 +14,9 @@ Instructions:
 	};
 }])
 4.  Add the following classes to the class="" to your html:
-            buttonPrimary: app-button
-            buttonSecondary: app-button-inverted
-            header: app-header
+        buttonPrimary: app-button
+        buttonSecondary: app-button-inverted
+        header: app-header
 */
 
 angular.module('SSFAppCss', [])
@@ -27,7 +27,7 @@ angular.module('SSFAppCss', [])
 	var defaultCss = SSFConfigConstants.SSFAppCssService;
 	
 	
-	service.setCss = function(buttonPrimary, buttonSecondary, header) {
+	service.setCss = function(buttonPrimary, buttonSecondary, header, storeCss) {
 		var cssObject = {};
 		cssObject.buttonPrimary = buttonPrimary !== undefined ? buttonPrimary : defaultCss.buttonPrimary;
 		cssObject.buttonSecondary = buttonSecondary !== undefined ? buttonSecondary : defaultCss.buttonSecondary;
@@ -38,7 +38,8 @@ angular.module('SSFAppCss', [])
 				sheet.deleteRule(i); //does not delete css loaded via file
 			}
 		}
-		$window.localStorage['appCss'] = JSON.stringify(cssObject);
+		if(storeCss === undefined || storeCss)
+			$window.localStorage['appCss'] = JSON.stringify(cssObject);
 		sheet.insertRule(
 			'.app-button {' +
 				'font-weight: bold !important;' + 
@@ -57,6 +58,10 @@ angular.module('SSFAppCss', [])
 			'.app-tabs {' + 
 				'font-weight: bold !important;' + 
 				'background-color: ' + cssObject.buttonPrimary + ' !important;' + 
+			'}', sheet.cssRules.length);
+		sheet.insertRule(
+			'.checkbox-calm .checkbox-icon:before {' +
+				'border-color: ' + cssObject.buttonPrimary + ' !important;' +
 			'}', sheet.cssRules.length);
 	};
 
@@ -89,4 +94,8 @@ angular.module('SSFAppCss', [])
 			'background: ' + company.buttonPrimary + ' !important;' +
 			'border-color: ' + company.buttonPrimary + ' !important;' +
     '}', sheet.cssRules.length);
+	sheet.insertRule(
+		'.checkbox-calm .checkbox-icon:before {' +
+			'border-color: ' + company.buttonPrimary + ' !important;' +
+		'}', sheet.cssRules.length);
 }]);
