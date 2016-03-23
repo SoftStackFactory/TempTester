@@ -21,7 +21,7 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   
   service.updateUser = function(token, userId, newData, whichModel) {
     return $http({
-      url: ENDPOINT_URL + whichModel,
+      url: ENDPOINT_URL + whichModel + userId,
       method: 'PUT',
       data: newData,
       headers: {

@@ -1,9 +1,9 @@
 angular.module('controllers')
 .controller('TkResultsCtrl', ['$scope', 'TKAnswersService', '$ionicHistory', '$state',
         'TKResultsButtonService', '$window', 'ServerAnswersService', 'SSFAlertsService',
-        'SSFSelectServices',
+        'SSFSelectServices', 'TKQuestionsService',
         function($scope, TKAnswersService, $ionicHistory, $state, TKResultsButtonService,
-        $window, ServerAnswersService, SSFAlertsService, SSFSelectServices) {
+        $window, ServerAnswersService, SSFAlertsService, SSFSelectServices, TKQuestionsService) {
     
     // $scope.$on('$ionicView.enter', function() {
     //     // Code you want executed every time view is opened
@@ -45,7 +45,7 @@ angular.module('controllers')
         newInstanceResult.original = false;
         // ServerAnswersService.checkAll(newInstanceResult.userID, newInstanceResult.employerId, answersInfo.createDate, $window.localStorage.token)
         // .then(function(response) {
-        if(answersInfo.shared) {
+        if(answersInfo.shared || answersInfo.shared === undefined) {
             if(newInstanceResult.userID === undefined) {
                 newInstanceResult.userID = $window.localStorage.userID;
             }
@@ -88,5 +88,18 @@ angular.module('controllers')
     function returnPercentage(value) {
         return (value / 12) * 100;
     }
-
+    
+    $scope.questions = TKQuestionsService.setQuestions();
+    $scope.isOdd = function(numb) {
+        return numb % 2;
+    };
+    $scope.consoleLog = function(a) {
+        console.log(a);
+    };
+    $scope.choiceSelected = function(index, index2) {
+        // index = JSON.parseInt(index);
+        if(answersInfo.answers[index] === $scope.questions[index2].Answer_ID)
+            return true;
+        return false;
+    };
 }]);

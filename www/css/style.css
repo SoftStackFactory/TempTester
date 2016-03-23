@@ -31,6 +31,10 @@
 .app-tabs {
     font-weight: bold !important;
 }
+
+.answer-selected {
+  border: 1px solid rgba(15,187,25,1) !important;
+}
 /*
 SSF Colors
 A34D24 rust

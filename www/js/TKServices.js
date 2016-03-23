@@ -6,7 +6,10 @@ angular.module('TKServicesModule', [])
     
     service.setQuestions = function(serverQuestions)
     {
+        if(serverQuestions === undefined)
+            return questions;
         questions = serverQuestions;
+        
     };
     
     service.getQuestion = function(questionID)

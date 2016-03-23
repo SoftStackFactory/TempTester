@@ -1,10 +1,10 @@
 angular.module('controllers')
 .controller('EmpLobbyCtrl', ['$scope', 'ServerAnswersService', '$window', '$state',
         'TKAnswersService', 'TKResultsButtonService', 'SSFAlertsService',
-        'TKQuestionsService', '$rootScope', 'employerName',
+        'TKQuestionsService', '$rootScope', 'employerName', 'ServerQuestionService',
         function($scope, ServerAnswersService, $window, $state, TKAnswersService,
         TKResultsButtonService, SSFAlertsService, TKQuestionsService,
-        $rootScope, employerName) {
+        $rootScope, employerName, ServerQuestionService) {
     
     var currentDate, page;
     $scope.employerName = employerName;
@@ -141,4 +141,30 @@ angular.module('controllers')
             return false;
         return true;
     };
+    
+    if(TKQuestionsService.questionsLenght() === 0)
+        getQuestions();
+        
+    function getQuestions() {
+        ServerQuestionService.all($window.localStorage['token'])
+        .then(function(response) {
+            if(response.status === 401)
+                return confirmPrompt();
+            if(response.status !== 200)
+                return SSFAlertsService.showAlert('Error', 'Some unknown error occurred.');
+            var questions = response.data;
+            TKQuestionsService.setQuestions(questions);
+        }, function(response) {
+            // something went wrong
+            confirmPrompt();
+        });
+    }
+    
+    function confirmPrompt() {
+        SSFAlertsService.showConfirm("Error","The questions could not be retrieved at this time, do you want to try again?")
+        .then(function(response) {
+            if(response == true)
+                getQuestions();
+        });
+    }
 }]);
