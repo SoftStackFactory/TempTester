@@ -32,8 +32,14 @@ angular.module('controllers')
         });
         $state.go('con-lobby');
     };
-    
-    $scope.labels = ["Competing", "Collaborating", "Compromising", "Avoiding", "Accommodating"];
+
+    $scope.labels = [
+        "Competing " + answersInfo.competing + "/12",
+        "Collaborating " + answersInfo.collaborating + "/12",
+        "Compromising " + answersInfo.compromising + "/12",
+        "Avoiding " + answersInfo.avoiding + "/12",
+        "Accommodating " + answersInfo.accommodating + "/12"
+    ];
     $scope.addEmployer = function() {
         var newInstanceResult = {};
         for(var i in answersInfo) {

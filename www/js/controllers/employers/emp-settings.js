@@ -46,6 +46,7 @@ angular.module('controllers')
     }, function(err) {
       if(err.data !== undefined)
         return SSFAlertsService.showAlert('Error', 'Check your connectin to the internet and try again.');
+      SSFAlertsService.showAlert('Error', 'Something went wrong.');
     });
   };
 

@@ -14,7 +14,7 @@
         
         <div class="list card padding" ng-repeat="question in questions track by $index" ng-if="isOdd($index)">
             <div class="item item-divider">
-                <b>Question # {{questions[$index].Question_Number}} :</b>
+                Question #{{questions[$index].Question_Number}}:
             </div>
             <div class="item item-text-wrap" ng-class="choiceSelected(questions[$index].Question_Number, $index - 1) ? 'answer-selected' : ''">
                 <b>Option A:</b> {{questions[$index].Text}}
