@@ -1,7 +1,57 @@
 angular.module('RESTConnection', [])
-.constant('ENDPOINT_URL', 'https://strongloop-backend-jbrownssf.c9.io/api/')
+.constant('ENDPOINT_URL', 'https://apitemperamenttests.softstackfactory.com/api/')
+//https://strongloop-backend-jbrownssf.c9.io/api/
 //https://apitemperamenttests.softstackfactory.com/api/
-.service('UserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
+// .service('UserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
+// function ($http, ENDPOINT_URL, SSFConfigConstants) {
+//   var service = this;
+//   // path = 'SSFUsers/';
+  
+//   function getUrl() {
+//     return ENDPOINT_URL + 'SSFUsers/';
+//   }
+  
+//   service.create = function (user) {
+//     return $http.post(getUrl(), user);
+//   };
+  
+//   service.login = function(user) {
+//     user['ttl'] = 1209600000;
+//     return $http.post(ENDPOINT_URL + SSFConfigConstants.currentLogin + 'login', user);
+//   };
+  
+//   service.updateUser = function(token, userId, newData, whichModel) {
+//     return $http({
+//       url: ENDPOINT_URL + whichModel + userId,
+//       method: 'PUT',
+//       data: newData,
+//       headers: {
+//         'Authorization': token
+//       }
+//   });
+//   };
+  
+//   service.getById = function(token, userId, whichModel) {
+//     return $http({
+//       url: ENDPOINT_URL + whichModel + userId,
+//       method: 'GET',
+//       headers: {
+//         'Authorization': token
+//       }
+//   });
+//   };
+  
+//   service.logout = function(token) {
+//     return $http({
+//         url: ENDPOINT_URL + SSFConfigConstants.currentLogin + 'logout',
+//         method: 'POST',
+//         headers: {
+//           'Authorization': token
+//         }
+//     });
+//   };
+// }])
+.service('ConUserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
 function ($http, ENDPOINT_URL, SSFConfigConstants) {
   var service = this;
   // path = 'SSFUsers/';
@@ -16,12 +66,12 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
   
   service.login = function(user) {
     user['ttl'] = 1209600000;
-    return $http.post(ENDPOINT_URL + SSFConfigConstants.currentLogin + 'login', user);
+    return $http.post(getUrl() + 'login', user);
   };
   
-  service.updateUser = function(token, userId, newData, whichModel) {
+  service.updateUser = function(token, userId, newData) {
     return $http({
-      url: ENDPOINT_URL + whichModel + userId,
+      url: getUrl() + userId,
       method: 'PUT',
       data: newData,
       headers: {
@@ -30,9 +80,68 @@ function ($http, ENDPOINT_URL, SSFConfigConstants) {
    });
   };
   
+  service.getById = function(token, userId) {
+    return $http({
+      url: getUrl() + userId,
+      method: 'GET',
+      headers: {
+        'Authorization': token
+      }
+   });
+  };
+  
   service.logout = function(token) {
     return $http({
-        url: ENDPOINT_URL + SSFConfigConstants.currentLogin + 'logout',
+        url: getUrl() + 'logout',
+        method: 'POST',
+        headers: {
+          'Authorization': token
+        }
+     });
+  };
+}])
+.service('EmpUserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
+function ($http, ENDPOINT_URL, SSFConfigConstants) {
+  var service = this;
+  // path = 'SSFUsers/';
+  
+  function getUrl() {
+    return ENDPOINT_URL + 'CompanyUsers/';
+  }
+  
+  service.create = function (user) {
+    return $http.post(getUrl(), user);
+  };
+  
+  service.login = function(user) {
+    user['ttl'] = 1209600000;
+    return $http.post(getUrl() + 'login', user);
+  };
+  
+  service.updateUser = function(token, userId, newData) {
+    return $http({
+      url: getUrl() + userId,
+      method: 'PUT',
+      data: newData,
+      headers: {
+        'Authorization': token
+      }
+   });
+  };
+  
+  // service.getById = function(token, userId, whichModel) {
+  //   return $http({
+  //     url: getUrl() + userId,
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': token
+  //     }
+  // });
+  // };
+  
+  service.logout = function(token) {
+    return $http({
+        url: getUrl() + 'logout',
         method: 'POST',
         headers: {
           'Authorization': token

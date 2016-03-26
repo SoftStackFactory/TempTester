@@ -1,0 +1,42 @@
+<ion-view view-title="Settings">
+  <ion-nav-buttons></ion-nav-buttons>
+    <ion-content>
+      <div class="padding text-center subheader">
+        Change Password
+      </div>
+      <form name="updatePassword" ng-submit="submitPassword(updatePassword)">
+        <div class="list">
+          <label class="item item-input">
+            <span class="input-label">Email</span>
+            <input type="email" ng-model="userInfo.email" disabled>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">First Name</span>
+            <input type="text" ng-model="userInfo.firstName" disabled>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Last Name</span>
+            <input type="text" ng-model="userInfo.lastName" disabled>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Current Password</span>
+            <input type="password" ng-model="updateUser.oldPassword">
+          </label>
+          <label class="item item-input">
+            <span class="input-label">New Password</span>
+            <input type="password" ng-model="updateUser.password">
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Repeat Password</span>
+            <input type="password" ng-model="repeat.password">
+          </label>
+        </div>
+        <div class="padding">
+          <button class="button button-block button-calm app-button">
+            Apply Changes
+          </button>
+        </div>
+      </form>
+      
+    </ion-content>
+</ion-view>

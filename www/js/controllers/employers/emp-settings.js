@@ -1,8 +1,8 @@
 angular.module('controllers')
 .controller('EmpSettingsCtrl', ['$scope', 'employer', 'SSFAppCssService', 'ServerEmployersService',
-    '$window', 'SSFAlertsService', 'UserService',
+    '$window', 'SSFAlertsService', 'EmpUserService',
     function($scope, employer, SSFAppCssService, ServerEmployersService, $window, SSFAlertsService,
-    UserService) {
+    EmpUserService) {
   var apply;
   $scope.applyChanges = function(value) {
     apply = value === 'true' ? true : false;
@@ -36,7 +36,7 @@ angular.module('controllers')
       return SSFAlertsService.showAlert('Error', 'Please fill in all required fields.');
     if($scope.updateUser.password !== $scope.repeat.password)
       return SSFAlertsService.showAlert('Error', 'Please make sure your passwords match.');
-    UserService.updateUser($window.localStorage.token, $window.localStorage.userID, $scope.updateUser, 'CompanyUsers/')
+    EmpUserService.updateUser($window.localStorage.token, $window.localStorage.userID, $scope.updateUser, 'CompanyUsers/')
     .then(function(res) {
       if(res.status !== 200)
         return SSFAlertsService.showAlert('Update Failed', res.data.error.message);

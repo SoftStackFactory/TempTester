@@ -1,7 +1,7 @@
 <ion-view view-title="{{title}}">
   <ion-nav-buttons></ion-nav-buttons>
   <ion-content class="padding">
-    <div class="card">
+    <div class="card" ng-click="buttonClicked('A')">
       <div class="item item-divider">
         Option A
       </div>
@@ -9,7 +9,7 @@
         {{questionA.Text}}
       </div>
     </div>  
-    <div class="card">
+    <div class="card" ng-click="buttonClicked('B')">
       <div class="item item-divider">
         Option B
       </div>
@@ -18,14 +18,11 @@
       </div>
     </div>
   </ion-content>
-  <!--<div class="bar bar-footer bar-calm">-->
-  <!--  <div class="title">Test Footer</div>-->
-  <!--</div>-->
-  <ion-footer-bar>
-      <div class="bar-positive tabs app-tabs">
-        <a class="tab-item" ng-click="buttonClicked('A')">A</a>
-        |
-        <a class="tab-item" ng-click="buttonClicked('B')">B</a>
-      </div>
-  </ion-footer-bar>
+  <!--<ion-footer-bar>-->
+  <!--    <div class="bar-positive tabs app-tabs">-->
+  <!--      <a class="tab-item" ng-click="buttonClicked('A')">A</a>-->
+  <!--      |-->
+  <!--      <a class="tab-item" ng-click="buttonClicked('B')">B</a>-->
+  <!--    </div>-->
+  <!--</ion-footer-bar>-->
 </ion-view>

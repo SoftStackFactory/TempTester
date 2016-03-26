@@ -15,7 +15,6 @@ angular.module('SSFConfig', [])
     //  if translation is a feature of the app, switch from false to true and review step 4.
     'shouldTranslate': false,
     //currentLogin is toggled between employerLogin and genericLogin from the landing page
-    'currentLogin': 'SSFUsers/',
     'isEmployer': false
 })
 .config(['SSFConfigConstants', function(SSFConfigConstants) {

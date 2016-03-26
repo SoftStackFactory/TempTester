@@ -1,10 +1,11 @@
+/*global angular*/
 angular.module('controllers')
 .controller('TkQuestionsCtrl', ['$scope', 'testInfo', '$stateParams', '$state', '$window',
     'TKAnswersService', 'ServerAnswersService', '$ionicHistory', 
-    'TKResultsButtonService', 'SSFAlertsService', 'UserService',
+    'TKResultsButtonService', 'SSFAlertsService', 'ConUserService',
     function($scope, testInfo, $stateParams, $state, $window, 
     TKAnswersService, ServerAnswersService, $ionicHistory, TKResultsButtonService,
-    SSFAlertsService, UserService) {
+    SSFAlertsService, ConUserService) {
   
   //testInfo is passed in the router to indicate the index
   var qNumber = $stateParams.testID;
@@ -50,7 +51,6 @@ angular.module('controllers')
     .then(function(response) {
       if(response.status !== 200)
         confirmPrompt();
-      UserService.updateUser($window.localStorage['token'], $window.localStorage['userID'], {'organization': $window.localStorage['userEmployer']}, 'SSFUsers/');
       $ionicHistory.nextViewOptions({
         historyRoot: true,
         disableBack: true

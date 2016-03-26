@@ -3,10 +3,14 @@
       <button class="button button-icon button-clear icon ion-log-out" ng-click="logout()">
       </button>
     </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <button class="button button-icon button-clear icon ion-ios-gear" ui-sref="con-settings">
+      </button>
+    </ion-nav-buttons>
     <ion-content class="padding">
       <div class="list animate-ripple">
         <button class="item button button-block button-positive app-button" ng-click="selectEmployer($event)">
-          Thomas Kilmann Test
+          Thomas-Kilmann Test
         </button>
         <button class="item button button-block button-positive app-button" ui-sref="tk-history">
           My Results

@@ -1,9 +1,16 @@
 angular.module('controllers', [])
 .controller('LandingCtrl', ['$scope', 'SSFConfigConstants', '$state', '$timeout', 'ionicMaterialInk',
-      'ionicMaterialMotion', '$ionicHistory',
+      'ionicMaterialMotion', '$ionicHistory', '$window',
       function($scope, SSFConfigConstants, $state, $timeout, ionicMaterialInk,
-      ionicMaterialMotion, $ionicHistory) {
+      ionicMaterialMotion, $ionicHistory, $window) {
   
+    if($window.localStorage.companyId !== undefined) {
+      $state.go('emp-lobby');
+    } else if($window.localStorage.userID !== undefined) {
+      $state.go('con-lobby');
+    } else {
+      $state.go('landing');
+    }
     $scope.$on('$ionicView.enter', function() {
       $ionicHistory.clearCache();
     });
@@ -11,10 +18,6 @@ angular.module('controllers', [])
       ionicMaterialInk.displayEffect();
       ionicMaterialMotion.ripple();
     },0);
-    $scope.loginButton = function(whichLogin) {
-      SSFConfigConstants.currentLogin = whichLogin;
-      $state.go('login');
-    };
     $scope.registerButton = function() {
       SSFConfigConstants.currentLogin = 'SSFUsers/';
       $state.go('register');

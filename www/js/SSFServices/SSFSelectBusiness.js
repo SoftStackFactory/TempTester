@@ -13,7 +13,7 @@ angular.module('SSFSelectBusiness', [])
     
     var service = this;
     
-    service.chooseEmployer = function($event, $scope, continueFunction, sharedArray) {
+    service.chooseEmployer = function($event, $scope, continueFunction, sharedArray, testDetails) {
         
         ServerEmployersService.get()
         .then(function(response) {
@@ -35,6 +35,10 @@ angular.module('SSFSelectBusiness', [])
             $scope.chooseEmployer.remove();
         };
         $scope.companyChange = function(company) {
+            if(company === 'None') {
+                $window.localStorage['userEmployer'] = 'None';
+                return $scope.closeEmployerPopover();
+            }
             $window.localStorage['userEmployer'] = company.id;
             SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
             if(company.shared)
@@ -49,12 +53,16 @@ angular.module('SSFSelectBusiness', [])
                     '<h1 class="title">Pick an Employer</h1>'+
                     '<div class="button button-icon button-clear" ng-click="closeModal()"><button class="button-icon icon ion-close-round"></button></div>' +
                 '</ion-header-bar>'+
-                '<ion-content>'+
+                '<ion-content>';
+        if(testDetails !== undefined) template += '<div class="card list-wrap padding">' + testDetails + '</div>';
+        template += '<div class="item"  ng-click="companyChange(\'None\')">' +
+                        '<img style="height: 40px; width: 40px; vertical-align: middle;">'+
+                        ' None' +
+                    '</div>'+
                     '<div class="item item-icon-right" ng-repeat="employer in employers" ng-click="companyChange(employer)">'+
-                        '<img ng-src="{{employer.iconUrl}}" style="height: 40px; width: 40px; vertical-align: middle;">{{employer.company_name}}'+
+                        '<img ng-src="{{employer.iconUrl}}" style="height: 40px; width: 40px; vertical-align: middle;"> {{employer.company_name}}'+
                         '<ion-icon class="icon ion-checkmark balanced" ng-show="employer.shared"></ion-icon>'+
                     '</div>'+
-                    '<div class="item" ng-click="closeEmployerPopover()">None</div>'+
                 '</ion-content>'+
             '</ion-modal-view>';
         

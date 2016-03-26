@@ -40,6 +40,10 @@ angular.module('controllers')
         "Avoiding " + answersInfo.avoiding + "/12",
         "Accommodating " + answersInfo.accommodating + "/12"
     ];
+    $scope.showAnswers = false;
+    $scope.revealAnswers = function() {
+        $scope.showAnswers = true;
+    };
     $scope.addEmployer = function() {
         var newInstanceResult = {};
         for(var i in answersInfo) {

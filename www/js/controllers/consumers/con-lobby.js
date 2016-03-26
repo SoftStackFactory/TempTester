@@ -60,15 +60,13 @@ angular.module('controllers')
         });
     }
     
-    $scope.takeTestButtonTapped = function() {
-        if($window.localStorage.userEmployer === undefined)
-            return SSFAlertsService.showAlert('Error', 'Please select a company to share your results with, or select "None" to not share with anyone.');
+    $scope.TKTest = function() {
         if(TKQuestionsService.questionsLenght() === 0)
             getQuestions();
         $state.go('tk-questions.detail',{testID:1});
     };
     
     $scope.selectEmployer = function($event) {
-        SSFSelectServices.chooseEmployer($event, $scope, 'takeTestButtonTapped');
+        SSFSelectServices.chooseEmployer($event, $scope, 'TKTest', undefined, 'The Thomas–Kilmann Conflict Mode Instrument test identifies five different styles of conflict: <br>Competing (assertive, uncooperative) <br>Avoiding (unassertive, uncooperative) <br>Accommodating (unassertive, cooperative) <br>Collaborating (assertive, cooperative) <br>Compromising (intermediate assertiveness and cooperativeness)');
     };
 }]);

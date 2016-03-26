@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
       cordova.plugins.Keyboard.disableScroll(true); //asdf
     }
     if(window.StatusBar) {
@@ -48,6 +48,26 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     url: '/consumers-lobby',
     templateUrl: 'templates/consumers/con-lobby.html',
     controller:'ConLobbyCtrl'
+  })
+  .state('con-settings', {
+    url: '/consumers-settings',
+    cache: false,
+    templateUrl: 'templates/consumers/con-settings.html',
+    controller:'ConSettingsCtrl',
+    resolve: {
+      userInfo: ['$window', 'ConUserService', 'SSFAlertsService',
+          function($window, ConUserService, SSFAlertsService) {
+        return ConUserService.getById($window.localStorage.token, $window.localStorage.userID)
+        .then(function(res) {
+          if(res.status !== 200)
+            SSFAlertsService.showAlert('Error', 'We could not retrieve your current data at this time.');
+          return res.data;
+        },function(err) {
+          SSFAlertsService.showAlert('Error', 'We could not retrieve your current data at this time.');
+          return {};
+        });
+      }]
+    }
   })
   
   //employers
@@ -88,15 +108,25 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
   })
   
   //forms
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/forms/login.html',
-    controller:'LoginCtrl'
+  // .state('login', {
+  //   url: '/login',
+  //   templateUrl: 'templates/forms/login.html',
+  //   controller:'LoginCtrl'
+  // })
+  .state('con-login', {
+    url: '/consumer-login',
+    templateUrl: 'templates/forms/con-login.html',
+    controller:'ConLoginCtrl'
+  })
+  .state('emp-login', {
+    url: '/employer-login',
+    templateUrl: 'templates/forms/emp-login.html',
+    controller:'EmpLoginCtrl'
   })
   .state('register', {
     url: '/register',
-    templateUrl: 'templates/forms/register.html',
-    controller:'RegisterCtrl'
+    templateUrl: 'templates/forms/con-register.html',
+    controller:'ConRegisterCtrl'
   })
   
   //TKTest
@@ -130,8 +160,8 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
   $urlRouterProvider.otherwise('/');
   
 }])
-.run(["$rootScope", "$ionicHistory", "$state", "$window", "UserService", "TKQuestionsService", 'SSFAppCssService',
-    function($rootScope, $ionicHistory, $state, $window, UserService, TKQuestionsService, SSFAppCssService) {
+.run(["$rootScope", "$ionicHistory", "$state", "$window", "ConUserService", "EmpUserService", "TKQuestionsService", 'SSFAppCssService',
+    function($rootScope, $ionicHistory, $state, $window, ConUserService, EmpUserService, TKQuestionsService, SSFAppCssService) {
 
   $rootScope.$on('request:auth', function() {
     $ionicHistory.nextViewOptions({
@@ -139,8 +169,13 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
       disableBack: true
     });
     SSFAppCssService.setCss();
-    if($window.localStorage.token !== undefined)
-      UserService.logout($window.localStorage.token);
+    if($window.localStorage.token !== undefined) {
+      if($window.localStorage.companyId !== undefined) {
+        EmpUserService.logout($window.localStorage.token, $window.localStorage.userID);
+      } else {
+        ConUserService.logout($window.localStorage.token, $window.localStorage.userID);
+      }
+    }
     delete $window.localStorage['userEmployer'];
     delete $window.localStorage['token'];
     delete $window.localStorage['userID'];
