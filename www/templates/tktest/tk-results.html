@@ -14,7 +14,7 @@
         
         <div class="list">
             <div class="card padding">
-                <div class="item list-wrap">
+                <div class="item item-text-wrap">
                     The Thomas–Kilmann Conflict Mode Instrument test identifies five different styles of conflict:
                     <br>Competing (assertive, uncooperative)
                     <br>Avoiding (unassertive, uncooperative)
@@ -27,7 +27,7 @@
                 show me the answers
             </button>
             <div class="list card padding" ng-repeat="question in questions track by $index" ng-if="isOdd($index - 1)" ng-show="showAnswers">
-                <div class="item item-divider">
+                <div class="item item-divider item-text-wrap">
                     Question #{{questions[$index].Question_Number}}:
                 </div>
                 <div class="item item-text-wrap" ng-class="choiceSelected(questions[$index].Question_Number, $index) ? 'answer-selected' : ''">
