@@ -20,6 +20,6 @@ angular.module('controllers', [])
     },0);
     $scope.registerButton = function() {
       SSFConfigConstants.currentLogin = 'SSFUsers/';
-      $state.go('register');
+      $state.go('con-register');
     };
 }]);

@@ -26,8 +26,14 @@
                 <label class="item item-input" ng-class="{ 'has-errors' : registerForm.repeatPassword.$invalid && registerForm.$submitted}">
                     <input name="repeatPassword" type="password" placeholder="Repeat password" ng-model="repeatPassword.password" required>
                 </label>
+                <ion-checkbox name="eula" ng-model="user.eula" class="checkbox-calm" ng-class="{ 'has-errors' : !registerForm.eula.$modelValue && registerForm.$submitted}" required>
+                  End User License Agreement
+                </ion-checkbox>
             </div>
-            <button type="submit" class="item button button-block button-positive waves-effect waves-button waves-light app-button">
+            <button type="button" class="item button button-block button-positive waves-effect waves-button waves-light app-button-inverted">
+                End User License Agreement
+            </button>
+            <button type="submit" class="item button button-block button-positive waves-effect waves-button waves-light app-button" ng-click="openEula()">
                 Sign up
             </button>
         </form>

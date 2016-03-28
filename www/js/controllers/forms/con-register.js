@@ -24,6 +24,8 @@ angular.module('controllers')
             return SSFAlertsService.showAlert('Error', 'Please fill in all required fields.');
         if($scope.user.password !== $scope.repeatPassword.password)
             return SSFAlertsService.showAlert("Warning","Passwords must match");
+        if(!$scope.user.eula)
+            return SSFAlertsService.showAlert("Error","Please read and accept our End User License Agreement.");
         
         $window.localStorage['userEmployer'] = $scope.user.organization;
         ConUserService.create($scope.user)
@@ -47,6 +49,11 @@ angular.module('controllers')
             SSFAlertsService.showAlert("Error","Something went wrong, try again.");
         });
     };
+    
+    $scope.openEula = function() {
+        //TODO: Display EULA
+    };
+    
     //Required to get the access token
     function loginAfterRegister() {
         ConUserService.login($scope.user)

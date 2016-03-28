@@ -123,8 +123,8 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
     templateUrl: 'templates/forms/emp-login.html',
     controller:'EmpLoginCtrl'
   })
-  .state('register', {
-    url: '/register',
+  .state('con-register', {
+    url: '/consumer-register',
     templateUrl: 'templates/forms/con-register.html',
     controller:'ConRegisterCtrl'
   })
