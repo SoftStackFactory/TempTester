@@ -14,24 +14,26 @@
         
         <div class="list">
             <div class="card padding">
-                The Thomas–Kilmann Conflict Mode Instrument test identifies five different styles of conflict:
-                <br>Competing (assertive, uncooperative)
-                <br>Avoiding (unassertive, uncooperative)
-                <br>Accommodating (unassertive, cooperative)
-                <br>Collaborating (assertive, cooperative)
-                <br>Compromising (intermediate assertiveness and cooperativeness)
+                <div class="item list-wrap">
+                    The Thomas–Kilmann Conflict Mode Instrument test identifies five different styles of conflict:
+                    <br>Competing (assertive, uncooperative)
+                    <br>Avoiding (unassertive, uncooperative)
+                    <br>Accommodating (unassertive, cooperative)
+                    <br>Collaborating (assertive, cooperative)
+                    <br>Compromising (intermediate assertiveness and cooperativeness)
+                </div>
             </div>
             <button class="button button-block button-calm app-button-inverted" ng-click="revealAnswers()" ng-hide="showAnswers">
                 show me the answers
             </button>
-            <div class="list card padding" ng-repeat="question in questions track by $index" ng-if="isOdd($index)" ng-show="showAnswers">
+            <div class="list card padding" ng-repeat="question in questions track by $index" ng-if="isOdd($index - 1)" ng-show="showAnswers">
                 <div class="item item-divider">
                     Question #{{questions[$index].Question_Number}}:
                 </div>
-                <div class="item item-text-wrap" ng-class="choiceSelected(questions[$index].Question_Number, $index - 1) ? 'answer-selected' : ''">
+                <div class="item item-text-wrap" ng-class="choiceSelected(questions[$index].Question_Number, $index) ? 'answer-selected' : ''">
                     <b>Option A:</b> {{questions[$index].Text}}
                 </div>
-                <div class="item item-text-wrap" ng-class="choiceSelected(questions[$index].Question_Number, $index) ? 'answer-selected' : ''">
+                <div class="item item-text-wrap" ng-class="choiceSelected(questions[$index].Question_Number, $index + 1) ? 'answer-selected' : ''">
                     <b>Option B:</b> {{questions[$index + 1].Text}}
                 </div>
             </div>
