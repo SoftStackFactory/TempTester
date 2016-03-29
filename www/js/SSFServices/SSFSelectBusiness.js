@@ -54,7 +54,7 @@ angular.module('SSFSelectBusiness', [])
                     '<div class="button button-icon button-clear" ng-click="closeModal()"><button class="button-icon icon ion-close-round"></button></div>' +
                 '</ion-header-bar>'+
                 '<ion-content>';
-        if(testDetails !== undefined) template += '<div class="card padding"><div class="item list-wrap">' + testDetails + '</div></div>';
+        if(testDetails !== undefined) template += '<div class="card padding"><div class="padding item item-text-wrap">' + testDetails + '</div></div>';
         template += '<div class="item"  ng-click="companyChange(\'None\')">' +
                         '<img style="height: 40px; width: 40px; vertical-align: middle;">'+
                         ' None' +

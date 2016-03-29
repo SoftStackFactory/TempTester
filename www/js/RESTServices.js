@@ -1,5 +1,5 @@
 angular.module('RESTConnection', [])
-.constant('ENDPOINT_URL', 'https://strongloop-backend-jbrownssf.c9.io/api/')
+.constant('ENDPOINT_URL', 'https://apitemperamenttests.softstackfactory.com/api/')
 //https://strongloop-backend-jbrownssf.c9.io/api/
 //https://apitemperamenttests.softstackfactory.com/api/
 // .service('UserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
