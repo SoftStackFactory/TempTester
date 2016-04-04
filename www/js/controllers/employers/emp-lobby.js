@@ -55,8 +55,8 @@ angular.module('controllers')
                 return stopScrolling = true;
             $scope.persons = response.data.results;
             for (var i in $scope.persons) {
-                $scope.persons[i].dataArray = [[returnPercentage($scope.persons[i].competing), returnPercentage($scope.persons[i].collaborating), 
-                returnPercentage($scope.persons[i].compromising), returnPercentage($scope.persons[i].avoiding), returnPercentage($scope.persons[i].accommodating)]];
+                $scope.persons[i].dataArray = [[competingPercentage($scope.persons[i].competing), collaboratingPercentage($scope.persons[i].collaborating), 
+                compromisingPercentage($scope.persons[i].compromising), avoidingPercentage($scope.persons[i].avoiding), accommodatingPercentage($scope.persons[i].accommodating)]];
             }
             page = {'nextPage': response.data.nextPage, 'totalPages': response.data.totalPages};
             return response;
@@ -130,8 +130,30 @@ angular.module('controllers')
     
     $scope.labels = ["Competing", "Collaborating", "Compromising", "Avoiding", "Accommodating"];
 
-    function returnPercentage (value) {
-        return (value / 12) * 100;
+    function competingPercentage(value) {
+        // missing 8 and 10
+        var returnValue = [0, 5, 10, 20, 30, 40, 55, 70, 75, 80, 85, 90, 100];
+        return returnValue[value];
+    }
+    function collaboratingPercentage(value) {
+        // missing 11
+        var returnValue = [0, 2.5, 5, 7.5, 10, 18, 25, 40, 55, 75, 80, 85, 90];
+        return returnValue[value];
+    }
+    function compromisingPercentage(value) {
+        // missing 9, 9, and 10
+        var returnValue = [0, 2.5, 5, 7.5, 15, 25, 35, 50, 60, 70, 80, 90, 100];
+        return returnValue[value];
+    }
+    function avoidingPercentage(value) {
+        // missing 7 and 9
+        var returnValue = [2.5, 5, 7.5, 10, 20, 30, 50, 65, 80, 85, 90, 95, 100];
+        return returnValue[value];
+    }
+    function accommodatingPercentage(value) {
+        // missing 8 and 9
+        var returnValue = [2.5, 5, 7.5, 20, 35, 55, 75, 80, 83.3, 86.7, 90, 95, 100];
+        return returnValue[value];
     }
     
     $scope.anyResults = function() {

@@ -69,9 +69,35 @@ angular.module('controllers')
         }
         // });
     };
-   
-    $scope.data = [[returnPercentage(answersInfo["competing"]), returnPercentage(answersInfo["collaborating"]), 
-        returnPercentage(answersInfo["compromising"]), returnPercentage(answersInfo["avoiding"]), returnPercentage(answersInfo["accommodating"])]];
+    
+    function competingPercentage(value) {
+        // missing 8 and 10
+        var returnValue = [0, 5, 10, 20, 30, 40, 55, 70, 75, 80, 85, 90, 100];
+        return returnValue[value];
+    }
+    function collaboratingPercentage(value) {
+        // missing 11
+        var returnValue = [0, 2.5, 5, 7.5, 10, 18, 25, 40, 55, 75, 80, 85, 90];
+        return returnValue[value];
+    }
+    function compromisingPercentage(value) {
+        // missing 9, 9, and 10
+        var returnValue = [0, 2.5, 5, 7.5, 15, 25, 35, 50, 60, 70, 80, 90, 100];
+        return returnValue[value];
+    }
+    function avoidingPercentage(value) {
+        // missing 7 and 9
+        var returnValue = [2.5, 5, 7.5, 10, 20, 30, 50, 65, 80, 85, 90, 95, 100];
+        return returnValue[value];
+    }
+    function accommodatingPercentage(value) {
+        // missing 8 and 9
+        var returnValue = [2.5, 5, 7.5, 20, 35, 55, 75, 80, 83.3, 86.7, 90, 95, 100];
+        return returnValue[value];
+    }
+    
+    $scope.data = [[competingPercentage(answersInfo["competing"]), collaboratingPercentage(answersInfo["collaborating"]), 
+        compromisingPercentage(answersInfo["compromising"]), avoidingPercentage(answersInfo["avoiding"]), accommodatingPercentage(answersInfo["accommodating"])]];
     
     $scope.options = {
         scaleIntegersOnly: true,
@@ -95,9 +121,6 @@ angular.module('controllers')
         pointHighlightStroke: "rgba(151,187,205,0.8)"
     }];
     
-    function returnPercentage(value) {
-        return (value / 12) * 100;
-    }
     
     $scope.questions = TKQuestionsService.setQuestions();
     $scope.isOdd = function(numb) {
