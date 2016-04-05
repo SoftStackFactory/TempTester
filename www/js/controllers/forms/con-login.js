@@ -47,7 +47,7 @@ angular.module('controllers')
     $scope.register = function() {
         if(SSFConfigConstants.currentLogin === 'CompanyUsers/')
             return SSFAlertsService.showAlert('Notice', 'To register as a new employer, please email jpbrown@softstackfactory.org for more information.');
-        $state.go('register');
+        $state.go('con-register');
     };
     
     function setLocalStorage(data, form) {
