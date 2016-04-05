@@ -6,6 +6,8 @@ angular.module('controllers')
         TKResultsButtonService, SSFAlertsService, TKQuestionsService,
         $rootScope, employerName, ServerQuestionService) {
     
+    
+    
     var currentDate, page;
     $scope.employerName = employerName;
     

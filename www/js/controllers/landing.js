@@ -3,7 +3,8 @@ angular.module('controllers', [])
       'ionicMaterialMotion', '$ionicHistory', '$window',
       function($scope, SSFConfigConstants, $state, $timeout, ionicMaterialInk,
       ionicMaterialMotion, $ionicHistory, $window) {
-  
+    
+    
     if($window.localStorage.companyId !== undefined) {
       $state.go('emp-lobby');
     } else if($window.localStorage.userID !== undefined) {
