@@ -15,10 +15,12 @@
     -->
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+<script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
     <script src="lib/ionic-material/dist/ionic.material.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+    <!-- Cordova is bootstrapped by ionic-platform-web-client, uncomment this if you remove ionic-platform-web-client... -->
+<!-- <script src="cordova.js"></script> -->
 
     <!-- chartjs -->
     <script src="lib/Chart/js/Chart.js"></script>
@@ -31,6 +33,7 @@
     <script src="js/SSFServices/SSFAlerts.js"></script>
     <script src="js/SSFServices/SSFAppCss.js"></script>
     <script src="js/SSFServices/SSFConfig.js"></script>
+    <script src="js/SSFServices/SSFDeploy.js"></script>
     <script src="js/SSFServices/SSFDirectives.js"></script>
     <script src="js/SSFServices/SSFSelectBusiness.js"></script>
     <script src="js/SSFServices/SSFSpinner.js"></script>

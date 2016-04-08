@@ -6,6 +6,8 @@ angular.module('controllers')
         ServerEmployersService, $timeout, ionicMaterialInk, ionicMaterialMotion,
         $rootScope, SSFAppCssService) {
     
+    // SSFDeployService.checkForUpdate();
+    
     $timeout(function(){
         ionicMaterialInk.displayEffect();
         ionicMaterialMotion.ripple();
@@ -51,7 +53,12 @@ angular.module('controllers')
     };
     
     $scope.openEula = function() {
-        //TODO: Display EULA
+        if($window.cordova && cordova.InAppBrowser){
+           cordova.InAppBrowser.open('http://www.softstackfactory.com/eula-content/', '_blank', 'location=no,hardwareback=no');
+        }
+        else {
+           $window.open('http://www.softstackfactory.com/eula-content/');
+        }
     };
     
     //Required to get the access token

@@ -3,8 +3,9 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnection', 'TKServicesModule',
-    'chart.js', 'SSFAlerts', 'ngIOS9UIWebViewPatch', 'SSFConfig', 'SSFAppCss', 'SSFSelectBusiness', 'SSFSpinner', 'SSFDirectives'])
+angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'controllers', 'RESTConnection', 'TKServicesModule',
+    'chart.js', 'SSFAlerts', 'ngIOS9UIWebViewPatch', 'SSFConfig', 'SSFAppCss', 'SSFSelectBusiness',
+    'SSFSpinner', 'SSFDirectives', 'SSFDeploy'])
 
 .run(["$ionicPlatform", "$window", "$state", "$ionicHistory", function($ionicPlatform, $window, $state, $ionicHistory) {
   $ionicPlatform.ready(function() {
@@ -19,17 +20,17 @@ angular.module('starter', ['ionic', 'ionic-material', 'controllers', 'RESTConnec
       StatusBar.StatusBar.styleLightContent();
     }
     
-    $ionicHistory.nextViewOptions({
-      historyRoot: true,
-      disableBack: true
-    });
-    if($window.localStorage.companyId !== undefined) {
-      $state.go('emp-lobby');
-    } else if($window.localStorage.userID !== undefined) {
-      $state.go('con-lobby');
-    } else {
-      $state.go('landing');
-    }
+    // $ionicHistory.nextViewOptions({
+    //   historyRoot: true,
+    //   disableBack: true
+    // });
+    // if($window.localStorage.companyId !== undefined) {
+    //   $state.go('emp-lobby');
+    // } else if($window.localStorage.userID !== undefined) {
+    //   $state.go('con-lobby');
+    // } else {
+    //   $state.go('landing');
+    // }
   });
 }])
 .config(['$stateProvider', '$urlRouterProvider',

@@ -1,4 +1,5 @@
 <ion-view view-title="Register" align-title="center"style="text-align: center">
+  <ion-nav-buttons></ion-nav-buttons>
     <ion-content class="padding">
         <form class="list animate-ripple" name="registerForm" novalidate ng-submit="signupForm(registerForm)">
             <div class="list list-inset">
@@ -30,10 +31,10 @@
                   End User License Agreement
                 </ion-checkbox>
             </div>
-            <button type="button" class="item button button-block button-positive waves-effect waves-button waves-light app-button-inverted">
+            <button type="button" class="item button button-block button-positive waves-effect waves-button waves-light app-button-inverted" ng-click="openEula()">
                 End User License Agreement
             </button>
-            <button type="submit" class="item button button-block button-positive waves-effect waves-button waves-light app-button" ng-click="openEula()">
+            <button type="submit" class="item button button-block button-positive waves-effect waves-button waves-light app-button">
                 Sign up
             </button>
         </form>

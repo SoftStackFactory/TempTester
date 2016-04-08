@@ -67,6 +67,6 @@ angular.module('controllers')
     };
     
     $scope.selectEmployer = function($event) {
-        SSFSelectServices.chooseEmployer($event, $scope, 'TKTest', undefined, 'The Thomas–Kilmann Conflict Mode Instrument test identifies five different styles of conflict: <br>Competing (assertive, uncooperative) <br>Avoiding (unassertive, uncooperative) <br>Accommodating (unassertive, cooperative) <br>Collaborating (assertive, cooperative) <br>Compromising (intermediate assertiveness and cooperativeness)');
+        SSFSelectServices.chooseEmployer($event, $scope, 'TKTest', undefined, 'The Thomas–Kilmann Conflict Mode Instrument test identifies five different styles of conflict management after answering 30 questions: <br>Competing (assertive, uncooperative) <br>Avoiding (unassertive, uncooperative) <br>Accommodating (unassertive, cooperative) <br>Collaborating (assertive, cooperative) <br>Compromising (intermediate assertiveness and cooperativeness)');
     };
 }]);

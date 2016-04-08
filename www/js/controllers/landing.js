@@ -4,17 +4,24 @@ angular.module('controllers', [])
       function($scope, SSFConfigConstants, $state, $timeout, ionicMaterialInk,
       ionicMaterialMotion, $ionicHistory, $window) {
     
-    
     if($window.localStorage.companyId !== undefined) {
+      $ionicHistory.nextViewOptions({
+        historyRoot: true,
+        disableBack: true
+      });
       $state.go('emp-lobby');
     } else if($window.localStorage.userID !== undefined) {
+      $ionicHistory.nextViewOptions({
+        historyRoot: true,
+        disableBack: true
+      });
       $state.go('con-lobby');
     } else {
-      $state.go('landing');
+      // $state.go('landing');
     }
-    $scope.$on('$ionicView.enter', function() {
-      $ionicHistory.clearCache();
-    });
+    // $scope.$on('$ionicView.enter', function() {
+    //   $ionicHistory.clearCache();
+    // });
     $timeout(function(){
       ionicMaterialInk.displayEffect();
       ionicMaterialMotion.ripple();
@@ -23,4 +30,6 @@ angular.module('controllers', [])
       SSFConfigConstants.currentLogin = 'SSFUsers/';
       $state.go('con-register');
     };
+    
+    
 }]);
