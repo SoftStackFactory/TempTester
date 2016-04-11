@@ -11,7 +11,8 @@
   border-width: 0px;
 }
 .subheader {
-  font-size: 20px;
+  font-size: 20px !important;
+  text-align: center !important;
 }
 
 /* ionics padding */

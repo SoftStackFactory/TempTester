@@ -20,17 +20,21 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'cont
       StatusBar.StatusBar.styleLightContent();
     }
     
-    // $ionicHistory.nextViewOptions({
-    //   historyRoot: true,
-    //   disableBack: true
-    // });
-    // if($window.localStorage.companyId !== undefined) {
-    //   $state.go('emp-lobby');
-    // } else if($window.localStorage.userID !== undefined) {
-    //   $state.go('con-lobby');
-    // } else {
-    //   $state.go('landing');
-    // }
+    if($window.localStorage.companyId !== undefined) {
+      $ionicHistory.nextViewOptions({
+        historyRoot: true,
+        disableBack: true
+      });
+      $state.go('emp-lobby');
+    } else if($window.localStorage.userID !== undefined) {
+      $ionicHistory.nextViewOptions({
+        historyRoot: true,
+        disableBack: true
+      });
+      $state.go('con-lobby');
+    } else {
+      $state.go('landing');
+    }
   });
 }])
 .config(['$stateProvider', '$urlRouterProvider',
