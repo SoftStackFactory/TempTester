@@ -1,8 +1,12 @@
 angular.module('controllers')
 .controller('EmpSettingsCtrl', ['$scope', 'employer', 'SSFAppCssService', 'ServerEmployersService',
-    '$window', 'SSFAlertsService', 'EmpUserService',
+    '$window', 'SSFAlertsService', 'EmpUserService', '$timeout', 'ionicMaterialInk', 'ionicMaterialMotion',
     function($scope, employer, SSFAppCssService, ServerEmployersService, $window, SSFAlertsService,
-    EmpUserService) {
+    EmpUserService, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+  $timeout(function(){
+    ionicMaterialInk.displayEffect();
+    ionicMaterialMotion.ripple();
+  },0);
   var apply;
   $scope.applyChanges = function(value) {
     apply = value === 'true' ? true : false;

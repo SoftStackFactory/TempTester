@@ -1,6 +1,12 @@
 angular.module('controllers')
 .controller('ConSettingsCtrl', ['$scope', '$window', 'SSFAlertsService', 'ConUserService', 'userInfo',
-    function($scope, $window, SSFAlertsService, ConUserService, userInfo) {
+    '$timeout', 'ionicMaterialInk', 'ionicMaterialMotion',
+    function($scope, $window, SSFAlertsService, ConUserService, userInfo, $timeout, ionicMaterialInk,
+    ionicMaterialMotion) {
+  $timeout(function(){
+    ionicMaterialInk.displayEffect();
+    ionicMaterialMotion.ripple();
+  },0);
   $scope.userInfo = userInfo;
   $scope.updateUser = {};
   $scope.repeat = {};
