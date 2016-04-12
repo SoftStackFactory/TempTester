@@ -80,6 +80,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'cont
     url: '/employer-lobby',
     templateUrl: 'templates/employers/emp-lobby.html',
     controller:'EmpLobbyCtrl',
+    cache: false,
     resolve: {
       employerName: function(ServerEmployersService, $window) {
         return ServerEmployersService.get()
@@ -182,6 +183,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'cont
       }
     }
     delete $window.localStorage['userEmployer'];
+    delete $window.localStorage['firstName'];
+    delete $window.localStorage['lastName'];
     delete $window.localStorage['token'];
     delete $window.localStorage['userID'];
     delete $window.localStorage['companyId'];

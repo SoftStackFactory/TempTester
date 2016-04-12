@@ -53,6 +53,8 @@ angular.module('controllers')
     function setLocalStorage(data, form) {
         $window.localStorage['userID'] = data.userId;
         $window.localStorage['token'] = data.id;
+        $window.localStorage['firstName'] = data.firstName;
+        $window.localStorage['lastName'] = data.lastName;
         $scope.user.password = "";
         form.$setPristine();
         if($scope.checkbox.conRememberMe) {

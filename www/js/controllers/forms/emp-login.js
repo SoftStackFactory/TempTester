@@ -1,9 +1,9 @@
 angular.module('controllers')
 .controller('EmpLoginCtrl', ['$scope', '$state', 'EmpUserService', '$ionicHistory', '$window',
         'SSFAlertsService', '$timeout', 'ionicMaterialInk','ionicMaterialMotion', 'SSFAppCssService',
-        'SSFConfigConstants',
+        'SSFConfigConstants', '$rootScope',
         function($scope, $state, EmpUserService, $ionicHistory, $window, SSFAlertsService, $timeout,
-        ionicMaterialInk, ionicMaterialMotion, SSFAppCssService, SSFConfigConstants) {
+        ionicMaterialInk, ionicMaterialMotion, SSFAppCssService, SSFConfigConstants, $rootScope) {
     
     $timeout(function(){
         ionicMaterialInk.displayEffect();
@@ -64,9 +64,8 @@ angular.module('controllers')
           historyRoot: true,
           disableBack: true
         });
-        if(data.companyId === undefined)
-            return $state.go('con-lobby');
         $window.localStorage['companyId'] = data.companyId;
+        $rootScope.refreshEmpLobby = true;
         $state.go('emp-lobby');
     }
 }]);

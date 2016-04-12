@@ -191,4 +191,6 @@ angular.module('controllers')
                 getQuestions();
         });
     }
+    
+    $scope.hover = false;
 }]);

@@ -39,4 +39,14 @@ angular.module('controllers')
         TKResultsButtonService.setShouldShowMenuButton(false);
         $state.go('tk-results');
     };
+    
+    $scope.isInverted = false;
+    $scope.invertResults = function() {
+        $scope.tests.reverse();
+        $scope.isInverted = $scope.isInverted ? false : true;
+    };
+    $scope.whichIndex = function(a) {
+        return $scope.isInverted ? $scope.tests.length + 1 - a : a;
+    };
+    $scope.invertResults();
 }]);

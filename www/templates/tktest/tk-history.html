@@ -1,9 +1,13 @@
 <ion-view view-title="{{pageTitle}}">
   <ion-nav-buttons></ion-nav-buttons>
+  <ion-nav-buttons side="right">
+      <button class="button button-icon button-clear icon" ng-class="isInverted ? 'ion-chevron-up' : 'ion-chevron-down'" ng-click="invertResults()">
+      </button>
+  </ion-nav-buttons>
   <ion-content> 
     <ion-list>
       <ion-item ng-repeat="test in tests" ng-click="goToResult(test)">
-        Test {{$index+1}}
+        Test {{whichIndex($index+1)}}
         <span class="item-note">
           {{test.createDate | date:'dd-MMM-yyyy hh:mm a'}}
         </span>
