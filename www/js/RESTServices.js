@@ -1,5 +1,5 @@
 angular.module('RESTConnection', [])
-.constant('ENDPOINT_URL', 'https://ssf-test-taker-ssfmaster.c9users.io/api/')
+.constant('ENDPOINT_URL', 'https://apitemperamenttests.softstackfactory.com/api/')
 .service('ConUserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
 function ($http, ENDPOINT_URL, SSFConfigConstants) {
   var service = this;
