@@ -1,5 +1,5 @@
 angular.module('RESTConnection', [])
-.constant('ENDPOINT_URL', 'https://apitemperamenttests.softstackfactory.com/api/')
+.constant('ENDPOINT_URL', 'https://ssf-test-taker-ssfmaster.c9users.io/api/')
 .service('ConUserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
 function ($http, ENDPOINT_URL, SSFConfigConstants) {
   var service = this;
@@ -206,6 +206,13 @@ function ($http, ENDPOINT_URL) {
   service.get = function() {
     return $http({
       url: getUrl()+'?filter[where][active]=true',
+      method: 'GET'
+     });
+  };
+  
+  service.getAll = function() {
+    return $http({
+      url: getUrl(),
       method: 'GET'
      });
   };

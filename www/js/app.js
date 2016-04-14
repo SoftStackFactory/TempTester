@@ -83,7 +83,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'cont
     cache: false,
     resolve: {
       employerName: function(ServerEmployersService, $window) {
-        return ServerEmployersService.get()
+        return ServerEmployersService.getAll()
         .then(function(response) {
           for(var i in response.data) {
             if($window.localStorage.companyId === response.data[i].id) {

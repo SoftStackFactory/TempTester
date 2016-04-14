@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ssf.temperament" version="1.0.0" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Temperament</name>
+<widget id="com.ssf.temperament" version="1.0" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Temperament Tests</name>
   <description>
-        An app based on the Thomas-Killman conclict mode instrument. 
-    </description>
+    An app based on the Thomas-Kilmann conflict mode instrument.
+  </description>
   <author email="hgottschalk@softstackfactory.com" href="http://www.softstackfactory.com/">
     SoftStack Factory
   </author>
