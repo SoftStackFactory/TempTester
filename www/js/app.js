@@ -101,7 +101,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'cont
     controller:'EmpSettingsCtrl',
     resolve: {
       employer: function(ServerEmployersService, $window) {
-        return ServerEmployersService.get()
+        return ServerEmployersService.getAll()
         .then(function(response) {
           for(var i in response.data) {
             if($window.localStorage.companyId === response.data[i].id) {
