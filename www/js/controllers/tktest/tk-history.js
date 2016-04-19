@@ -5,7 +5,6 @@ angular.module('controllers')
         SSFAlertsService, TKQuestionsService) {
     
     $scope.tests = TKQuestionsService.getCompanyUserData();
-    
     if($scope.tests.length === 0) {
         $scope.pageTitle = 'My Results';
         performRequest();
@@ -20,6 +19,7 @@ angular.module('controllers')
                 return confirmPrompt();
             //Should return an array of tests
             $scope.tests = response.data;
+            $scope.tests.reverse();
         }, function(response) {
             // something went wrong
             confirmPrompt();
@@ -46,7 +46,6 @@ angular.module('controllers')
         $scope.isInverted = $scope.isInverted ? false : true;
     };
     $scope.whichIndex = function(a) {
-        return $scope.isInverted ? $scope.tests.length + 1 - a : a;
+        return $scope.isInverted ? a : $scope.tests.length + 1 - a;
     };
-    $scope.invertResults();
 }]);
