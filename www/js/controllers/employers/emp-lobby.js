@@ -8,6 +8,7 @@ angular.module('controllers')
     
     
     
+    $scope.search = {};
     var currentDate, page;
     $scope.employerName = employerName;
     
@@ -193,4 +194,8 @@ angular.module('controllers')
     }
     
     $scope.hover = false;
+    
+  $scope.resetSearch = function() {
+    $scope.search = {};
+  };
 }]);
