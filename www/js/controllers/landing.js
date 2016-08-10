@@ -1,4 +1,6 @@
 angular.module('controllers', [])
+
+
 .controller('LandingCtrl', ['$scope', 'SSFConfigConstants', '$state', '$timeout', 'ionicMaterialInk',
       'ionicMaterialMotion', '$ionicHistory', '$window',
       function($scope, SSFConfigConstants, $state, $timeout, ionicMaterialInk,

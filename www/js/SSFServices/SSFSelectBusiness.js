@@ -40,7 +40,7 @@ angular.module('SSFSelectBusiness', [])
                 return $scope.closeEmployerPopover();
             }
             $window.localStorage['userEmployer'] = company.id;
-            SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
+            // SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
             if(company.shared)
                 return SSFAlertsService.showAlert('Error', 'You have already shared these results with this employer.');
             $scope.closeEmployerPopover();

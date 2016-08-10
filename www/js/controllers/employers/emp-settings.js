@@ -22,7 +22,7 @@ angular.module('controllers')
   $scope.updatePreferences = function(form) {
     if(!form.$valid)
       return;
-    SSFAppCssService.setCss($scope.preferencesInputs.buttonPrimary, $scope.preferencesInputs.buttonSecondary, $scope.preferencesInputs.header, apply);
+    // SSFAppCssService.setCss($scope.preferencesInputs.buttonPrimary, $scope.preferencesInputs.buttonSecondary, $scope.preferencesInputs.header, apply);
     if(apply)
       ServerEmployersService.update($window.localStorage.token, $window.localStorage.companyId, $scope.preferencesInputs)
       .then(function(res) {

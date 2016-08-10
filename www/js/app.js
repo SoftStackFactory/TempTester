@@ -174,7 +174,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic-material', 'cont
       historyRoot: true,
       disableBack: true
     });
-    SSFAppCssService.setCss();
+    // SSFAppCssService.setCss();
     if($window.localStorage.token !== undefined) {
       if($window.localStorage.companyId !== undefined) {
         EmpUserService.logout($window.localStorage.token, $window.localStorage.userID);

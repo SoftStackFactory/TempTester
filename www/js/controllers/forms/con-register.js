@@ -16,10 +16,10 @@ angular.module('controllers')
     $scope.user = {};
     $scope.repeatPassword = {};
     $rootScope.stopSpinner = true;
-    ServerEmployersService.get()
-    .then(function(response) {
-        $scope.employers = response.data;
-    });
+    // ServerEmployersService.get()
+    // .then(function(response) {
+    //     $scope.employers = response.data;
+    // });
     
     $scope.signupForm = function(form) {
         if(!form.$valid)
@@ -29,7 +29,7 @@ angular.module('controllers')
         if(!$scope.user.eula)
             return SSFAlertsService.showAlert("Error","Please read and accept our End User License Agreement.");
         
-        $window.localStorage['userEmployer'] = $scope.user.organization;
+        // $window.localStorage['userEmployer'] = $scope.user.organization;
         ConUserService.create($scope.user)
         .then(function(response) {
             if(response.status === 422)
@@ -72,13 +72,13 @@ angular.module('controllers')
             setLocalStorage(response.data);
             // sets CSS for normal user based on company chosen.
             var company = {};
-            for(var i in $scope.employers) {
-                if($scope.employers[i].id === $scope.user.organization) {
-                    company = $scope.employers[i];
-                    break;
-                }
-            }
-            SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
+            // for(var i in $scope.employers) {
+            //     if($scope.employers[i].id === $scope.user.organization) {
+            //         company = $scope.employers[i];
+            //         break;
+            //     }
+            // }
+            // SSFAppCssService.setCss(company.buttonPrimary, company.buttonSecondary, company.header);
             resetFields();
             $ionicHistory.nextViewOptions({
                 historyRoot: true,

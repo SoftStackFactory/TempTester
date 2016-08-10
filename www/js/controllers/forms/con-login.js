@@ -29,8 +29,8 @@ angular.module('controllers')
                 return SSFAlertsService.showAlert("Error","Incorrect username or password");
             if(response.status !== 200)
                 return SSFAlertsService.showAlert("Error", "Something went wrong, try again.");
-            if(response.data.companyId !== undefined)
-                SSFAppCssService.setCss(response.data.appCss.buttonPrimary, response.data.appCss.buttonSecondary, response.data.appCss.header);
+            // if(response.data.companyId !== undefined)
+                // SSFAppCssService.setCss(response.data.appCss.buttonPrimary, response.data.appCss.buttonSecondary, response.data.appCss.header);
             //Should return a token
             setLocalStorage(response.data, form);
         }, function(response) {

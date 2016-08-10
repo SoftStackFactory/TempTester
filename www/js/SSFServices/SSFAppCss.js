@@ -26,44 +26,46 @@ angular.module('SSFAppCss', [])
 	var service = this;
 	var defaultCss = SSFConfigConstants.SSFAppCssService;
 	
-	
-	service.setCss = function(buttonPrimary, buttonSecondary, header, storeCss) {
-		var cssObject = {};
-		cssObject.buttonPrimary = buttonPrimary !== undefined ? buttonPrimary : defaultCss.buttonPrimary;
-		cssObject.buttonSecondary = buttonSecondary !== undefined ? buttonSecondary : defaultCss.buttonSecondary;
-		cssObject.header = header !== undefined ? header : defaultCss.header;
-		var sheet = window.document.styleSheets[0];
-		for(var i = sheet.rules.length - 1; i > 0; i--) {
-			if(sheet.rules[i].cssText.slice(0, 5) === '.app-') {
-				sheet.deleteRule(i); //does not delete css loaded via file
-			}
-		}
-		if(storeCss === undefined || storeCss)
-			$window.localStorage['appCss'] = JSON.stringify(cssObject);
-		sheet.insertRule(
-			'.app-button {' +
-				'font-weight: bold !important;' + 
-				'background-color: ' + cssObject.buttonPrimary + ' !important;' + 
-			'}', sheet.cssRules.length);
-		sheet.insertRule(
-			'.app-button-inverted {' + 
-				'font-weight: bold !important;' + 
-				'background-color: ' + cssObject.buttonSecondary + ' !important;' + 
-			'}', sheet.cssRules.length);
-		sheet.insertRule(
-			'.app-bar-header {' + 
-				'background-color: ' + cssObject.header + ' !important;' + 
-			'}', sheet.cssRules.length);
-		sheet.insertRule(
-			'.app-tabs {' + 
-				'font-weight: bold !important;' + 
-				'background-color: ' + cssObject.buttonPrimary + ' !important;' + 
-			'}', sheet.cssRules.length);
-		sheet.insertRule(
-			'.checkbox-calm .checkbox-icon:before {' +
-				'border-color: ' + cssObject.buttonPrimary + ' !important;' +
-			'}', sheet.cssRules.length);
-	};
+	//halts the app for anyone using safari, explorer, or firefox
+	// service.setCss = function(buttonPrimary, buttonSecondary, header, storeCss) {
+	// 	var cssObject = {};
+	// 	cssObject.buttonPrimary = buttonPrimary !== undefined ? buttonPrimary : defaultCss.buttonPrimary;
+	// 	cssObject.buttonSecondary = buttonSecondary !== undefined ? buttonSecondary : defaultCss.buttonSecondary;
+	// 	cssObject.header = header !== undefined ? header : defaultCss.header;
+	// 	var sheet = window.document.styleSheets[0];
+	// 	if(sheet.rules !== undefined) {
+	// 		for(var i = sheet.rules.length - 1; i > 0; i--) {
+	// 			if(sheet.rules[i].cssText.slice(0, 5) === '.app-') {
+	// 				sheet.deleteRule(i); //does not delete css loaded via file
+	// 			}
+	// 		}
+	// 	}
+	// 	if(storeCss === undefined || storeCss)
+	// 		$window.localStorage['appCss'] = JSON.stringify(cssObject);
+	// 	sheet.insertRule(
+	// 		'.app-button {' +
+	// 			'font-weight: bold !important;' + 
+	// 			'background-color: ' + cssObject.buttonPrimary + ' !important;' + 
+	// 		'}', sheet.cssRules.length);
+	// 	sheet.insertRule(
+	// 		'.app-button-inverted {' + 
+	// 			'font-weight: bold !important;' + 
+	// 			'background-color: ' + cssObject.buttonSecondary + ' !important;' + 
+	// 		'}', sheet.cssRules.length);
+	// 	sheet.insertRule(
+	// 		'.app-bar-header {' + 
+	// 			'background-color: ' + cssObject.header + ' !important;' + 
+	// 		'}', sheet.cssRules.length);
+	// 	sheet.insertRule(
+	// 		'.app-tabs {' + 
+	// 			'font-weight: bold !important;' + 
+	// 			'background-color: ' + cssObject.buttonPrimary + ' !important;' + 
+	// 		'}', sheet.cssRules.length);
+	// 	sheet.insertRule(
+	// 		'.checkbox-calm .checkbox-icon:before {' +
+	// 			'border-color: ' + cssObject.buttonPrimary + ' !important;' +
+	// 		'}', sheet.cssRules.length);
+	// };
 
 }])
 .run(['SSFConfigConstants', '$window',
