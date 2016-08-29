@@ -1,5 +1,6 @@
 angular.module('RESTConnection', [])
-.constant('ENDPOINT_URL', 'https://apitemperamenttests.softstackfactory.com/api/')
+.constant('ENDPOINT_URL', 
+'https://apitemperamenttests.softstackfactory.com/api/')
 .service('ConUserService', ['$http', 'ENDPOINT_URL', 'SSFConfigConstants',
 function ($http, ENDPOINT_URL, SSFConfigConstants) {
   var service = this;
@@ -148,12 +149,16 @@ function ($http, ENDPOINT_URL) {
       params: { access_token: token }
     });
   };
-  service.allByEmployerId = function(date, limit, nextPage, employerId, token) {
+  service.allByEmployerId = function(date, limit, nextPage, employerId, token, startDate) {
+    var tempDate = {};
+    if(date) tempDate.lt = date;
+    if(startDate) tempDate.gt = startDate;
+    console.log(tempDate);
     return $http({
       url: getUrl()+'page',
       method: 'POST',
       data: {
-        'date': date,
+        'date': tempDate,
         'limit': limit,
         'filters': {
           'where': {
@@ -175,7 +180,7 @@ function ($http, ENDPOINT_URL) {
       url: getUrl()+'page',
       method: 'POST',
       data: {
-        'date': date,
+        'date': {lt: date},
         'limit': limit,
         'filters': {
           'where': {

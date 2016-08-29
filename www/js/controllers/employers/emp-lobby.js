@@ -2,14 +2,20 @@ angular.module('controllers')
 .controller('EmpLobbyCtrl', ['$scope', 'ServerAnswersService', '$window', '$state',
         'TKAnswersService', 'TKResultsButtonService', 'SSFAlertsService',
         'TKQuestionsService', '$rootScope', 'employerName', 'ServerQuestionService',
+        '$ionicModal', 'SSFConfigConstants',
         function($scope, ServerAnswersService, $window, $state, TKAnswersService,
         TKResultsButtonService, SSFAlertsService, TKQuestionsService,
-        $rootScope, employerName, ServerQuestionService) {
+        $rootScope, employerName, ServerQuestionService, $ionicModal, SSFConfigConstants) {
     
+	var lastYear = new Date();
+	lastYear.setFullYear(lastYear.getFullYear() - 1);
+    var today = new Date();
+    $scope.endDate = new Date().toJSON();
+    $scope.startDate = new Date().setDate(today.getDate()-90);
     
     
     $scope.search = {};
-    var currentDate, page;
+    var page;
     $scope.employerName = employerName;
     
     $scope.tests = [];
@@ -34,8 +40,6 @@ angular.module('controllers')
     };
     $scope.doRefresh = function() {
         page = {'nextPage': undefined};
-        currentDate = new Date();
-        currentDate = currentDate.toUTCString();
         $rootScope.stopSpinner = true;
         performRequest()
         .then(function(res) {
@@ -49,10 +53,13 @@ angular.module('controllers')
             performRequest();
         }
     };
-    function performRequest() {
+    function performRequest(startMonth, endMonth, isNew) {
+        if(isNew) page = {'nextPage': undefined};
+        if(startMonth) $scope.startDate = startMonth;
+        if(endMonth) $scope.endDate = endMonth;
         if(stopScrolling)
             return;
-        return ServerAnswersService.allByEmployerId(currentDate, 15, page.nextPage, $window.localStorage.companyId, $window.localStorage.token)
+        return ServerAnswersService.allByEmployerId($scope.endDate, 15, page.nextPage, $window.localStorage.companyId, $window.localStorage.token, $scope.startDate)
         .then(function(response) {
             if(response.status !== 200)
                 return stopScrolling = true;
@@ -195,7 +202,106 @@ angular.module('controllers')
     
     $scope.hover = false;
     
-  $scope.resetSearch = function() {
-    $scope.search = {};
-  };
+    $scope.resetSearch = function() {
+        $scope.search = {};
+    };
+  
+  
+  
+	$scope.addDate = function($event) {
+		var dates = {
+			start: $scope.startDate,
+			end: $scope.endDate
+		};
+		dateRangeModal($event, $scope, dates, performRequest);
+	};
+	
+	
+    function dateRangeModal($event, $scope, isOld, submitFunction) {
+        //{start: '', end: ''}
+        //isInvoice: if you're editing the Purchase Order or the Invoice
+        //isOld: if you're adding a new Purchase Order/Invoice, set it to false
+                //if you're editing an existing PO/Invoice, pass in the object here
+        //submitFunction: pass in a string for the name of the '$scope.functionName = function(form, inputs) {'
+                //like so "SubRepModal.set($event, $scope, true, true, 'functionName')"
+        $scope.SubRepModal = {};
+        var tempObj = JSON.parse(JSON.stringify(isOld));
+        tempObj.start = new Date(tempObj.start);
+        tempObj.end = new Date(tempObj.end);
+        $scope.SubRepModal.ngModel = tempObj;
+        
+        $ionicModal.fromTemplateUrl('templates/daterange-modal.html', {
+            scope: $scope,
+            animation: 'slide-in-up',
+            backdropClickToClose: false
+        })
+        .then(function(res) {
+            $scope.SubRepModal.modal = res;
+            $scope.SubRepModal.modal.show();
+        });
+        
+        $scope.SubRepModal.close = function() {
+            $scope.SubRepModal.modal.remove();
+        };
+        $scope.SubRepModal.submit = function(form, startMonth, endMonth) {
+            if(form.$invalid)
+                return SSFAlertsService.showAlert('Error', 'Fill in all required fields marked with a red border.');
+            if ($scope.SubRepModal.ngModel.start > $scope.SubRepModal.ngModel.end) {
+                return SSFAlertsService.showAlert('Error', 'Start Date must be set before End Date.');
+            }
+            $scope.SubRepModal.close();
+            submitFunction(startMonth, endMonth, true);
+        };
+    }
+    
+// 	$scope.getMonthData = function(startMonth, endMonth) {
+// 	    $scope.endDate = endMonth;
+// 		$scope.startDate = startMonth;
+//         ServerAnswersService.allByEmployerId($scope.endDate, 15, page.nextPage, $window.localStorage.companyId, $window.localStorage.token, startMonth)
+//         .then(function(response) {
+//             if(response.status !== 200)
+//                 return stopScrolling = true;
+//             $scope.persons = response.data.results;
+//             for (var i in $scope.persons) {
+//                 $scope.persons[i].dataArray = [[competingPercentage($scope.persons[i].competing), collaboratingPercentage($scope.persons[i].collaborating), 
+//                 compromisingPercentage($scope.persons[i].compromising), avoidingPercentage($scope.persons[i].avoiding), accommodatingPercentage($scope.persons[i].accommodating)]];
+//             }
+//             page = {'nextPage': response.data.nextPage, 'totalPages': response.data.totalPages};
+//             return response;
+//         },function(err) {
+//             stopScrolling = true;
+//             if(err.data === null)
+//                 return;
+//             SSFAlertsService.showConfirm('Error', 'There was a problem getting more results, do you want to try again?')
+//             .then(function(res) {
+//                 if(res)
+//                     stopScrolling = false;
+//             });
+//         });
+// 	};
+	
+	$scope.ssfInputModal = function() {
+		if ($window.innerWidth < SSFConfigConstants.SSFDirectives.contentWidth) {
+			return {
+				width: $window.innerWidth + 'px',
+				margin: 'auto',
+				height: '100%',
+				top: '0%',
+				right: '0%',
+				bottom: '0%',
+				left: '0%'
+			};
+		}
+		else {
+			return {
+				width: SSFConfigConstants.SSFDirectives.contentWidth + 'px',
+				margin: 'auto',
+				height: '100%',
+				top: '0%',
+				right: '0%',
+				bottom: '0%',
+				left: '0%'
+			};
+		}
+	};
 }]);

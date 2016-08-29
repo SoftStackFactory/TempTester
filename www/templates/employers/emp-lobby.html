@@ -7,6 +7,15 @@
       <button class="button button-icon button-clear icon ion-ios-gear" ui-sref="emp-settings">
       </button>
     </ion-nav-buttons>
+    <ion-nav-bar  class="bar-calm app-bar-header custom-bar"></ion-nav-bar>
+    <ion-header-bar class="bar bar-subheader bar-calm app-bar-header">
+        <h4 class="title" style="color: white">
+            {{startDate | date: 'mediumDate'}} - {{endDate | date: 'mediumDate'}}
+        </h4>
+        <div class="buttons">
+            <button class="button button-clear ion-ios-calendar-outline icon" ng-click="addDate($event)"></button>
+        </div>
+    </ion-header-bar>
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
@@ -32,10 +41,11 @@
             </div>
             
             <div class="item card" ng-repeat="person in persons | filter: search.txt">
-                <div class="row">
+                <div>
                     <h2 style="font-size:25px;white-space:normal">
                         {{person.firstName}} {{person.lastName}}
                     </h2>
+                    <h3 style="color: gray">{{person.email}}</h3>
                 </div>
                 <div class="row">
                     <div class="col col-50">

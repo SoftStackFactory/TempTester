@@ -52,3 +52,12 @@ EB7C23 orange
 808285 gray
 796E23 green
 */
+
+
+
+ion-header-bar.bar.custom-bar {
+  border: 0px none none !important;
+  background-image: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}

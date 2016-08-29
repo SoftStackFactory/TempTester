@@ -1,0 +1,32 @@
+<ion-modal-view class="modals" ng-style="ssfInputModal()"> 
+    <ion-header-bar class="bar-calm app-bar-header"> 
+        <h1 class="title">
+            <!--{{POInvoiceModal.isNew ? 'Add' : 'Edit'}} {{POInvoiceModal.isInvoice ? 'Invoice' : 'Purchase Order'}}-->
+            {{SubRepModal.isNew ? 'Filter By' : 'Filter By'}} Date
+        </h1> 
+        <div class="button button-icon button-clear" ng-click="SubRepModal.close()">
+            <button class="button-icon icon ion-close-round" style="color: white;">
+            </button>
+        </div>  
+    </ion-header-bar> 
+    <ion-content>
+        
+        <form name="SubRepForm" class="padding list" ng-submit="SubRepModal.submit(SubRepForm, SubRepModal.ngModel.start, SubRepModal.ngModel.end)" novalidate>
+            
+            <!--Purchase Order Fields-->
+            <!--<div ng-show="!POInvoiceModal.isInvoice">-->
+            <label class="item item-input">
+                <span class="input-label">Start Date</span>
+                <input type="date" name="start" ng-model="SubRepModal.ngModel.start" required>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">End Date</span>
+                <input type="date" name="end" ng-model="SubRepModal.ngModel.end" required>
+            </label>
+            <button class="button button-full button-calm app-button" type="submit">
+                Show Results
+            </button>
+            
+        </form>
+    </ion-content>
+</ion-modal-view>
