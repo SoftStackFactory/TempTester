@@ -8,8 +8,8 @@ Instructions:
 
 angular.module('SSFSelectBusiness', [])
 .service('SSFSelectServices', ['$ionicPopover', 'ServerEmployersService', '$window', '$ionicModal', 'SSFAppCssService',
-        'SSFAlertsService',
-        function($ionicPopover, ServerEmployersService, $window, $ionicModal, SSFAppCssService, SSFAlertsService) {
+        'SSFAlertsService', 'SSFConfigConstants',
+        function($ionicPopover, ServerEmployersService, $window, $ionicModal, SSFAppCssService, SSFAlertsService, SSFConfigConstants) {
     
     var service = this;
     
@@ -47,8 +47,31 @@ angular.module('SSFSelectBusiness', [])
         };
         $scope.user = {};
         
+          $scope.ssfInputModal =function() {
+            if($window.innerWidth < SSFConfigConstants.SSFDirectives.contentWidth) {
+              return {
+                width: $window.innerWidth + 'px',
+                margin: 'auto',
+                height: '100%',
+                top: '0%',
+                right: '0%',
+                bottom: '0%',
+                left: '0%'
+              };
+            } else {
+              return {
+                width: SSFConfigConstants.SSFDirectives.contentWidth + 'px',
+                margin: 'auto',
+                height: '100%',
+                top: '0%',
+                right: '0%',
+                bottom: '0%',
+                left: '0%'
+              };
+            }
+          };
         var template = 
-            '<ion-modal-view>'+
+            '<ion-modal-view ng-style="ssfInputModal()">'+
                 '<ion-header-bar>'+
                     '<h1 class="title">Pick an Employer</h1>'+
                     '<div class="button button-icon button-clear" ng-click="closeModal()"><button class="button-icon icon ion-close-round"></button></div>' +
