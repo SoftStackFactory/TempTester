@@ -40,29 +40,28 @@ angular.module('controllers')
     };
     $scope.doRefresh = function() {
         page = {'nextPage': undefined};
-        $rootScope.stopSpinner = true;
+        $rootScope.stopSpinner = false;
         performRequest()
         .then(function(res) {
             $scope.$broadcast('scroll.refreshComplete');
         });
     };
     $scope.doRefresh();
-    var stopScrolling = false;
+    $scope.stopScrolling = false;
     $scope.scrollResults = function() {
-        if(page.nextPage <= page.totalPages) {
+        // if(page.nextPage <= page.totalPages) {
             performRequest();
-        }
+        // }
     };
     function performRequest(startMonth, endMonth, isNew) {
         if(isNew) page = {'nextPage': undefined};
         if(startMonth) $scope.startDate = startMonth;
         if(endMonth) $scope.endDate = endMonth;
-        if(stopScrolling)
-            return;
-        return ServerAnswersService.allByEmployerId($scope.endDate, 15, page.nextPage, $window.localStorage.companyId, $window.localStorage.token, $scope.startDate)
+        return ServerAnswersService.allByEmployerId($scope.endDate, 10000, page.nextPage, $window.localStorage.companyId, $window.localStorage.token, $scope.startDate)
         .then(function(response) {
+            // $scope.$broadcast('scroll.infiniteScrollComplete');
             if(response.status !== 200)
-                return stopScrolling = true;
+                return $scope.stopScrolling = true;
             $scope.persons = response.data.results;
             for (var i in $scope.persons) {
                 $scope.persons[i].dataArray = [[competingPercentage($scope.persons[i].competing), collaboratingPercentage($scope.persons[i].collaborating), 
@@ -71,13 +70,13 @@ angular.module('controllers')
             page = {'nextPage': response.data.nextPage, 'totalPages': response.data.totalPages};
             return response;
         },function(err) {
-            stopScrolling = true;
+            $scope.stopScrolling = true;
             if(err.data === null)
                 return;
             SSFAlertsService.showConfirm('Error', 'There was a problem getting more results, do you want to try again?')
             .then(function(res) {
                 if(res)
-                    stopScrolling = false;
+                    $scope.stopScrolling = false;
             });
         });
     }
